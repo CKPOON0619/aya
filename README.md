@@ -6,6 +6,11 @@ Aya is a Prediction Model on the frontend interface which will be built overtime
 
 (Still in ideation phase)
 
+## How to run
+
+1. ```npm install```
+2. ```npm start```
+
 ## Tech Used
 
 * Tensorflow.js
