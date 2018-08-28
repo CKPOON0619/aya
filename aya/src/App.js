@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
 
 
@@ -25,7 +24,9 @@ class DropFile extends Component {
   }
   render() {
     // Setup the dnd listeners.
-    return <div id="drop_zone" onDrop={this.handleFileSelect} onDragOver={this.handleDragOver}> Drop files here</div>
+    return <div id="drop_zone" className="App-dropzone" onDrop={this.handleFileSelect} onDragOver={this.handleDragOver}> 
+      <p>Drop your files here</p>
+    </div>
   }
 }
 
@@ -33,6 +34,9 @@ class App extends Component {
   render() {
     return (
       <div className="App">
+        <header className="App-header">
+          <h1>Aya</h1>
+        </header>
         <div id='list'></div>
         <DropFile/>
       </div>

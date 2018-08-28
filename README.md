@@ -36,4 +36,3 @@ Implementing a feature called greeting.
 5. ```git merge feature/greeting-feature``` to add your branch into development.
 
 * It's considered best practice not to code on master.
-
