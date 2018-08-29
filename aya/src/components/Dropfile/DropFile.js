@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import './Dropfile.css'; 
 
 class DropFile extends Component {
     constructor(props) {
@@ -20,7 +21,7 @@ class DropFile extends Component {
     render() {    
         console.log(this.props.list)
       // Setup the dnd listeners.
-      return <div className="App-dropzone" onDrop={this.handleFileSelect} onDragOver={this.handleDragOver}> 
+      return <div className="Dropfile-dropzone" onDrop={this.handleFileSelect} onDragOver={this.handleDragOver}> 
         {this.props.list}
         </div>
     }
