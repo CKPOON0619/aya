@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import DropFile from './components/DropFile'
+import ClickButton from './components/ClickButton'
 import './App.css';
 
 
@@ -13,7 +14,6 @@ class App extends Component {
     this.handleTrain = this.handleTrain.bind(this);
     this.handlePredict = this.handlePredict.bind(this);
     this.handleDownload = this.handleDownload.bind(this);
-
     this.state = {
         inputs:null,
         predictions:null,
@@ -28,9 +28,8 @@ class App extends Component {
     evt.preventDefault();
     var files = evt.dataTransfer.files; // FileList object.
     // files is a FileList of File objects. List some properties.
-    console.log(files)
     var output = [];
-    for (var i = 0, f; f = files[i]; i++) {
+    for (var i = 0, f; (f = files[i])&&i<4; i++) {
       output.push(
         <li key={'f'+i.toString()+'_'+f.name}>
             <strong> 
@@ -39,7 +38,6 @@ class App extends Component {
             ( {f.type || 'n/a'} ) - {f.size} bytes last modified: {f.lastModifiedDate.toLocaleDateString()}
         </li>
     )}
-    console.log(output)
     this.setState({
       inputs:evt.dataTransfer.files, 
       inputFilesLst:<ul>{output}</ul>
@@ -71,7 +69,7 @@ class App extends Component {
     evt.dataTransfer.dropEffect = 'copy'; // Explicitly show this is a copy.
   }
 
-  handleTrain(){}
+  handleTrain(evt){console.log('ahhh...')}
 
   handlePredict(){}
 
@@ -84,7 +82,10 @@ class App extends Component {
           <h1>Aya</h1>
         </header>
         <DropFile id='input_dropZone' onDrop={this.handleInputSelect} onDragOver={this.handleFileDragOver} list={this.state.inputFilesLst?this.state.inputFilesLst:'Drop inputs here'}/>
+        <ClickButton onClick={this.handleTrain} message='Train'/>
         <DropFile id='predict_dropZone' onDrop={this.handlePredictionSelect} onDragOver={this.handleFileDragOver} list={this.state.predictionFilesLst?this.state.predictionFilesLst:'Drop prediction here'}/>
+        <ClickButton onClick={this.handlePredict} message='Predict'/>
+        <ClickButton onClick={this.handleDownload} message='Download'/>
       </div>
     );
   }

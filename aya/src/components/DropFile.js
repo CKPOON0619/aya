@@ -7,14 +7,10 @@ class DropFile extends Component {
         this.handleDragOver=this.handleDragOver.bind(this);
       }
     handleFileSelect(evt) {
-        //evt.stopPropagation();
-        //evt.preventDefault();
         this.props.onDrop(evt);
     }
   
     handleDragOver(evt) {
-        //evt.stopPropagation();
-        //evt.preventDefault();
         this.props.onDragOver(evt);
     }
     render() {    
