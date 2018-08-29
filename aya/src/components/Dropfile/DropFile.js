@@ -19,7 +19,6 @@ class DropFile extends Component {
         this.props.onDragOver(evt);
     }
     render() {    
-        console.log(this.props.list)
       // Setup the dnd listeners.
       return <div className="Dropfile-dropzone" onDrop={this.handleFileSelect} onDragOver={this.handleDragOver}> 
         {this.props.list}

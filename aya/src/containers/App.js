@@ -14,7 +14,9 @@ class App extends Component {
 
     this.state = {
       inputs: null,
+      inputData:null,
       predictions: null,
+      predictionData:null,
       trained: false,
       predicted: false,
       download: null
@@ -24,6 +26,7 @@ class App extends Component {
   handleInputSelect(evt) {
     evt.stopPropagation();
     evt.preventDefault();
+    var container=this;//Get reference to the container.
     var files = evt.dataTransfer.files; // FileList object.
     // files is a FileList of File objects. List some properties.
     var output = [];
@@ -36,6 +39,17 @@ class App extends Component {
             ( {f.type || 'n/a'} ) - {f.size} bytes last modified: {f.lastModifiedDate.toLocaleDateString()}
         </li>
     )}
+    
+    var reader = new FileReader();
+    reader.onload = function(event) {
+      // The data will be read within this callback.
+      // This callback will mutate the state through setState
+      var rawData=event.target.result
+      container.setState({inputData:rawData.split('\n').slice(1).map(row=>row.split(','))})
+    };
+  
+    reader.readAsText(files[0])
+    
     this.setState({
       inputs:evt.dataTransfer.files, 
       inputFilesLst:<ul>{output.length>0?output:'Drop your training inputs(.csv/.txt) here'}</ul>
