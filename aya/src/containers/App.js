@@ -1,6 +1,10 @@
 import React, { Component } from "react";
 import DropFile from "../components/Dropfile/DropFile";
-import SubmitButton from '../components/Buttons/SubmitButton/SubmitButton'; 
+import SubmitButton from "../components/Buttons/SubmitButton/SubmitButton";
+import CancelButton from "../components/Buttons/CancelButton/CancelButton";
+import EditButton from "../components/Buttons/EditButton/EditButton";
+
+import ClickButton from "../components/ClickButton/ClickButton";
 import "./App.css";
 
 class App extends Component {
@@ -51,9 +55,15 @@ class App extends Component {
     reader.readAsText(files[0])
     
     this.setState({
-      inputs:evt.dataTransfer.files, 
-      inputFilesLst:<ul>{output.length>0?output:'Drop your training inputs(.csv/.txt) here'}</ul>
-    })
+      inputs: evt.dataTransfer.files,
+      inputFilesLst: (
+        <ul>
+          {output.length > 0
+            ? output
+            : "Drop your training inputs(.csv/.txt) here"}
+        </ul>
+      )
+    });
   }
   handlePredictionSelect(evt) {
     evt.stopPropagation();
@@ -61,19 +71,25 @@ class App extends Component {
     var files = evt.dataTransfer.files; // FileList object.
     // files is a FileList of File objects. List some properties.
     var output = [];
-    for (var i = 0, f; (f = files[i])&&i<4; i++) {
-      if((f.type=='text/csv')||(f.type=='text/plain')) output.push(
-        <li key={'f'+i.toString()+'_'+f.name}>
-            <strong> 
-                {escape(f.name)}
-            </strong> 
-            ( {f.type || 'n/a'} ) - {f.size} bytes last modified: {f.lastModifiedDate.toLocaleDateString()}
-        </li>
-    )}
+    for (var i = 0, f; (f = files[i]) && i < 4; i++) {
+      if (f.type === "text/csv" || f.type === "text/plain")
+        output.push(
+          <li key={"f" + i.toString() + "_" + f.name}>
+            <strong>{escape(f.name)}</strong>( {f.type || "n/a"} ) - {f.size}{" "}
+            bytes last modified: {f.lastModifiedDate.toLocaleDateString()}
+          </li>
+        );
+    }
     this.setState({
-      predictions:evt.dataTransfer.files, 
-      predictionFilesLst:<ul>{output.length>0?output:'Drop your dataset for prediction(.csv/.txt) here'}</ul>
-    })
+      predictions: evt.dataTransfer.files,
+      predictionFilesLst: (
+        <ul>
+          {output.length > 0
+            ? output
+            : "Drop your dataset for prediction(.csv/.txt) here"}
+        </ul>
+      )
+    });
   }
 
   handleFileDragOver(evt) {
@@ -82,7 +98,9 @@ class App extends Component {
     evt.dataTransfer.dropEffect = "copy"; // Explicitly show this is a copy.
   }
 
-  handleTrain() {console.log('clicked Train')}
+  handleTrain() {
+    console.log("clicked Train");
+  }
 
   handlePredict() {}
 
@@ -104,10 +122,7 @@ class App extends Component {
               : "Drop inputs here"
           }
         />
-        <SubmitButton 
-          clicked={this.handleTrain} 
-          label={'Train'}
-        />
+        <SubmitButton clicked={this.handleTrain} label={"Train"} />
         <DropFile
           id="predict_dropZone"
           onDrop={this.handlePredictionSelect}
@@ -118,14 +133,16 @@ class App extends Component {
               : "Drop prediction here"
           }
         />
-        <SubmitButton 
-          clicked={this.handlePredict} 
-          label='Predict'
+        <SubmitButton clicked={this.handleTrain} label={"Train"} />
+        <CancelButton label={"Download"} />
+        <EditButton label={"Upload"} />
+        <ClickButton
+          onClick={this.handlePredict}
+          message="Predict"
+          clicked={this.handlePredict}
+          label="Predict"
         />
-        <SubmitButton 
-          clicked={this.handleDownload} 
-          label='Download'
-        />
+        <SubmitButton clicked={this.handleDownload} label="Download" />
       </div>
     );
   }
