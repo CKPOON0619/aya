@@ -1,8 +1,6 @@
 import React, { Component } from "react";
 import DropFile from "../components/Dropfile/DropFile";
 import SubmitButton from '../components/Buttons/SubmitButton/SubmitButton'; 
-
-import ClickButton from "../components/ClickButton/ClickButton";
 import "./App.css";
 
 class App extends Component {
@@ -30,7 +28,7 @@ class App extends Component {
     // files is a FileList of File objects. List some properties.
     var output = [];
     for (var i = 0, f; (f = files[i])&&i<4; i++) {
-      output.push(
+      if((f.type=='text/csv')||(f.type=='text/plain')) output.push(
         <li key={'f'+i.toString()+'_'+f.name}>
             <strong> 
                 {escape(f.name)}
@@ -40,7 +38,7 @@ class App extends Component {
     )}
     this.setState({
       inputs:evt.dataTransfer.files, 
-      inputFilesLst:<ul>{output}</ul>
+      inputFilesLst:<ul>{output.length>0?output:'Drop your training inputs(.csv/.txt) here'}</ul>
     })
   }
   handlePredictionSelect(evt) {
@@ -50,7 +48,7 @@ class App extends Component {
     // files is a FileList of File objects. List some properties.
     var output = [];
     for (var i = 0, f; (f = files[i])&&i<4; i++) {
-      output.push(
+      if((f.type=='text/csv')||(f.type=='text/plain')) output.push(
         <li key={'f'+i.toString()+'_'+f.name}>
             <strong> 
                 {escape(f.name)}
@@ -60,7 +58,7 @@ class App extends Component {
     )}
     this.setState({
       predictions:evt.dataTransfer.files, 
-      predictionFilesLst:<ul>{output}</ul>
+      predictionFilesLst:<ul>{output.length>0?output:'Drop your dataset for prediction(.csv/.txt) here'}</ul>
     })
   }
 
@@ -92,9 +90,9 @@ class App extends Component {
               : "Drop inputs here"
           }
         />
-        <ClickButton 
-          onClick={this.handleTrain} 
-          message='Train'
+        <SubmitButton 
+          clicked={this.handleTrain} 
+          label={'Train'}
         />
         <DropFile
           id="predict_dropZone"
@@ -106,14 +104,13 @@ class App extends Component {
               : "Drop prediction here"
           }
         />
-        <SubmitButton clicked={this.handleTrain} label={'Train'}/>
-        <ClickButton 
-          onClick={this.handlePredict} 
-          message='Predict'
+        <SubmitButton 
+          clicked={this.handlePredict} 
+          label='Predict'
         />
-        <ClickButton 
-          onClick={this.handleDownload} 
-          message='Download'
+        <SubmitButton 
+          clicked={this.handleDownload} 
+          label='Download'
         />
       </div>
     );
