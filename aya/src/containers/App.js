@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import DropFile from "../components/Dropfile/DropFile";
-import SubmitButton from '../components/Buttons/SubmitButton/SubmitButton'; 
-import CancelButton from '../components/Buttons/CancelButton/CancelButton'; 
-import EditButton from '../components/Buttons/EditButton/EditButton'; 
+import SubmitButton from "../components/Buttons/SubmitButton/SubmitButton";
+import CancelButton from "../components/Buttons/CancelButton/CancelButton";
+import EditButton from "../components/Buttons/EditButton/EditButton";
 
 import ClickButton from "../components/ClickButton/ClickButton";
 import "./App.css";
@@ -31,19 +31,25 @@ class App extends Component {
     var files = evt.dataTransfer.files; // FileList object.
     // files is a FileList of File objects. List some properties.
     var output = [];
-    for (var i = 0, f; (f = files[i])&&i<4; i++) {
-      output.push(
-        <li key={'f'+i.toString()+'_'+f.name}>
-            <strong> 
-                {escape(f.name)}
-            </strong> 
-            ( {f.type || 'n/a'} ) - {f.size} bytes last modified: {f.lastModifiedDate.toLocaleDateString()}
-        </li>
-    )}
+    for (var i = 0, f; (f = files[i]) && i < 4; i++) {
+      if (f.type === "text/csv" || f.type === "text/plain")
+        output.push(
+          <li key={"f" + i.toString() + "_" + f.name}>
+            <strong>{escape(f.name)}</strong>( {f.type || "n/a"} ) - {f.size}{" "}
+            bytes last modified: {f.lastModifiedDate.toLocaleDateString()}
+          </li>
+        );
+    }
     this.setState({
-      inputs:evt.dataTransfer.files, 
-      inputFilesLst:<ul>{output}</ul>
-    })
+      inputs: evt.dataTransfer.files,
+      inputFilesLst: (
+        <ul>
+          {output.length > 0
+            ? output
+            : "Drop your training inputs(.csv/.txt) here"}
+        </ul>
+      )
+    });
   }
   handlePredictionSelect(evt) {
     evt.stopPropagation();
@@ -51,19 +57,25 @@ class App extends Component {
     var files = evt.dataTransfer.files; // FileList object.
     // files is a FileList of File objects. List some properties.
     var output = [];
-    for (var i = 0, f; (f = files[i])&&i<4; i++) {
-      output.push(
-        <li key={'f'+i.toString()+'_'+f.name}>
-            <strong> 
-                {escape(f.name)}
-            </strong> 
-            ( {f.type || 'n/a'} ) - {f.size} bytes last modified: {f.lastModifiedDate.toLocaleDateString()}
-        </li>
-    )}
+    for (var i = 0, f; (f = files[i]) && i < 4; i++) {
+      if (f.type === "text/csv" || f.type === "text/plain")
+        output.push(
+          <li key={"f" + i.toString() + "_" + f.name}>
+            <strong>{escape(f.name)}</strong>( {f.type || "n/a"} ) - {f.size}{" "}
+            bytes last modified: {f.lastModifiedDate.toLocaleDateString()}
+          </li>
+        );
+    }
     this.setState({
-      predictions:evt.dataTransfer.files, 
-      predictionFilesLst:<ul>{output}</ul>
-    })
+      predictions: evt.dataTransfer.files,
+      predictionFilesLst: (
+        <ul>
+          {output.length > 0
+            ? output
+            : "Drop your dataset for prediction(.csv/.txt) here"}
+        </ul>
+      )
+    });
   }
 
   handleFileDragOver(evt) {
@@ -72,7 +84,9 @@ class App extends Component {
     evt.dataTransfer.dropEffect = "copy"; // Explicitly show this is a copy.
   }
 
-  handleTrain() {console.log('clicked Train')}
+  handleTrain() {
+    console.log("clicked Train");
+  }
 
   handlePredict() {}
 
@@ -94,10 +108,7 @@ class App extends Component {
               : "Drop inputs here"
           }
         />
-        <ClickButton 
-          onClick={this.handleTrain} 
-          message='Train'
-        />
+        <SubmitButton clicked={this.handleTrain} label={"Train"} />
         <DropFile
           id="predict_dropZone"
           onDrop={this.handlePredictionSelect}
@@ -108,17 +119,16 @@ class App extends Component {
               : "Drop prediction here"
           }
         />
-        <SubmitButton clicked={this.handleTrain} label={'Train'}/>
-        <CancelButton  label={'Download'}/>
-        <EditButton label={'Upload'}/>
-        <ClickButton 
-          onClick={this.handlePredict} 
-          message='Predict'
+        <SubmitButton clicked={this.handleTrain} label={"Train"} />
+        <CancelButton label={"Download"} />
+        <EditButton label={"Upload"} />
+        <ClickButton
+          onClick={this.handlePredict}
+          message="Predict"
+          clicked={this.handlePredict}
+          label="Predict"
         />
-        <ClickButton 
-          onClick={this.handleDownload} 
-          message='Download'
-        />
+        <SubmitButton clicked={this.handleDownload} label="Download" />
       </div>
     );
   }
