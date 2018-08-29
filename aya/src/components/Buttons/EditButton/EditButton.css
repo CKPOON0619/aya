@@ -1,6 +1,6 @@
-.CancelButton-cancel {
+.EditButton-edit {
   background-color: white;
-  border: 2px solid #F37836;
+  border: 2px solid #555555;
   color: black;
   padding: 16px 32px;
   text-align: center;
@@ -13,7 +13,7 @@
   cursor: pointer;
 }
 
-.CancelButton-cancel:hover {
-  background-color: #F37836;
+.EditButton-edit:hover {
+  background-color: #555555;
   color: white;
 }

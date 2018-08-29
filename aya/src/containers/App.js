@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import DropFile from "../components/Dropfile/DropFile";
 import SubmitButton from '../components/Buttons/SubmitButton/SubmitButton'; 
 import CancelButton from '../components/Buttons/CancelButton/CancelButton'; 
+import EditButton from '../components/Buttons/EditButton/EditButton'; 
 
 import ClickButton from "../components/ClickButton/ClickButton";
 import "./App.css";
@@ -109,6 +110,7 @@ class App extends Component {
         />
         <SubmitButton clicked={this.handleTrain} label={'Train'}/>
         <CancelButton  label={'Download'}/>
+        <EditButton label={'Upload'}/>
         <ClickButton 
           onClick={this.handlePredict} 
           message='Predict'

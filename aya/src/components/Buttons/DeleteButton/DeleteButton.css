@@ -1,6 +1,6 @@
-.CancelButton-cancel {
+.DeleteButton-delete {
   background-color: white;
-  border: 2px solid #F37836;
+  border: 2px solid #f44336;
   color: black;
   padding: 16px 32px;
   text-align: center;
@@ -13,7 +13,7 @@
   cursor: pointer;
 }
 
-.CancelButton-cancel:hover {
-  background-color: #F37836;
+.DeleteButton-delete:hover {
+  background-color: #f44336;
   color: white;
 }
