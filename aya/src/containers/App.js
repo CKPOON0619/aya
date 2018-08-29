@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import DropFile from "../components/Dropfile/DropFile";
+import SubmitButton from '../components/Buttons/SubmitButton/SubmitButton'; 
+
 import "./App.css";
 
 class App extends Component {
@@ -65,7 +67,7 @@ class App extends Component {
     evt.dataTransfer.dropEffect = "copy"; // Explicitly show this is a copy.
   }
 
-  handleTrain() {}
+  handleTrain() {console.log('clicked Train')}
 
   handlePredict() {}
 
@@ -97,6 +99,7 @@ class App extends Component {
               : "Drop prediction here"
           }
         />
+        <SubmitButton clicked={this.handleTrain} label={'Train'}/>
       </div>
     );
   }
