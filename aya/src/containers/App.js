@@ -1,10 +1,8 @@
 import React, { Component } from "react";
 import DropFile from "../components/Dropfile/DropFile";
 import SubmitButton from "../components/Buttons/SubmitButton/SubmitButton";
-import CancelButton from "../components/Buttons/CancelButton/CancelButton";
 import EditButton from "../components/Buttons/EditButton/EditButton";
-
-import ClickButton from "../components/ClickButton/ClickButton";
+import * as tf from '@tensorflow/tfjs';
 import "./App.css";
 
 class App extends Component {
@@ -16,9 +14,12 @@ class App extends Component {
     this.handlePredict = this.handlePredict.bind(this);
     this.handleDownload = this.handleDownload.bind(this);
 
+
     this.state = {
       inputs: null,
+      dataDim:null,
       inputData:[],
+      inputLabel:[],
       predictData:[],
       predictions: null,
       predictionData:null,
@@ -37,7 +38,7 @@ class App extends Component {
     // files is a FileList of File objects. List some properties.
     var output = [];
     for (var i = 0, f; (f = files[i])&&i<4; i++) {
-      if((f.type=='text/csv')||(f.type=='text/plain')){ 
+      if((f.type==='text/csv')||(f.type==='text/plain')){ 
         output.push(
           <li key={'f'+i.toString()+'_'+f.name}>
               <strong> 
@@ -51,9 +52,12 @@ class App extends Component {
           // The data will be read within this callback.
           // This callback will mutate the state through setState
           var rawData=event.target.result;
+          var arrData=rawData.split('\n').slice(1).map(row=>row.split(','));
           container.setState((prevState, props) => ({
-            inputData: prevState.inputData.concat(rawData.split('\n').slice(1).map(row=>row.split(',')))
+            inputData: prevState.inputData.concat(arrData.map(row=>row.slice(0,-1))),
+            inputLabel: prevState.inputLabel.concat(arrData.map(row=>row.slice(-1)))
           }));
+          console.log('Data loading complete!')
         };
         reader.readAsText(f);
       };
@@ -103,13 +107,34 @@ class App extends Component {
   }
 
   handleTrain() {
-    console.log("clicked Train");
+    const model = tf.sequential();
+    model.add(tf.layers.dense({units: 100, activation: 'relu', inputShape: [this.state.inputData[0].length]}));
+    model.add(tf.layers.dense({units: 1, activation: 'softmax'}));
+    model.compile({optimizer: 'sgd', loss: 'binaryCrossentropy'});
+    var xs=tf.tensor2d(this.state.inputData)
+    var ys=tf.tensor2d(this.state.inputLabel)
+    model.fit(xs, ys, {
+      epochs: 100,
+      callbacks: {
+        onEpochEnd: async (epoch, log) => {
+          console.log(`Epoch ${epoch}: loss = ${log.loss}`);
+        }
+      }
+    })
+    console.log("Trained :)");
   }
 
   handlePredict() {}
 
   handleDownload() {}
 
+  componentDidMount () {
+    const script = document.createElement("script");
+    script.src = "https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@0.12.5";
+    script.type = 'text/javascript'
+    script.async = true;
+    document.head.appendChild(script);
+  }
   render() {
     return (
       <div className="App">
