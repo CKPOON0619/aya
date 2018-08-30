@@ -18,7 +18,8 @@ class App extends Component {
 
     this.state = {
       inputs: null,
-      inputData:null,
+      inputData:[],
+      predictData:[],
       predictions: null,
       predictionData:null,
       trained: false,
@@ -30,30 +31,33 @@ class App extends Component {
   handleInputSelect(evt) {
     evt.stopPropagation();
     evt.preventDefault();
+
     var container=this;//Get reference to the container.
     var files = evt.dataTransfer.files; // FileList object.
     // files is a FileList of File objects. List some properties.
     var output = [];
     for (var i = 0, f; (f = files[i])&&i<4; i++) {
-      if((f.type=='text/csv')||(f.type=='text/plain')) output.push(
-        <li key={'f'+i.toString()+'_'+f.name}>
-            <strong> 
-                {escape(f.name)}
-            </strong> 
-            ( {f.type || 'n/a'} ) - {f.size} bytes last modified: {f.lastModifiedDate.toLocaleDateString()}
-        </li>
-    )}
-    
-    var reader = new FileReader();
-    reader.onload = function(event) {
-      // The data will be read within this callback.
-      // This callback will mutate the state through setState
-      var rawData=event.target.result
-      container.setState({inputData:rawData.split('\n').slice(1).map(row=>row.split(','))})
-    };
-  
-    reader.readAsText(files[0])
-    
+      if((f.type=='text/csv')||(f.type=='text/plain')){ 
+        output.push(
+          <li key={'f'+i.toString()+'_'+f.name}>
+              <strong> 
+                  {escape(f.name)}
+              </strong> 
+              ( {f.type || 'n/a'} ) - {f.size} bytes last modified: {f.lastModifiedDate.toLocaleDateString()}
+          </li>
+        )
+        var reader = new FileReader();
+        reader.onload = function(event) {
+          // The data will be read within this callback.
+          // This callback will mutate the state through setState
+          var rawData=event.target.result;
+          container.setState((prevState, props) => ({
+            inputData: prevState.inputData.concat(rawData.split('\n').slice(1).map(row=>row.split(',')))
+          }));
+        };
+        reader.readAsText(f);
+      };
+    };  
     this.setState({
       inputs: evt.dataTransfer.files,
       inputFilesLst: (
@@ -122,7 +126,10 @@ class App extends Component {
               : "Drop inputs here"
           }
         />
-        <SubmitButton clicked={this.handleTrain} label={"Train"} />
+        <SubmitButton 
+          clicked={this.handleTrain} 
+          label={"Train"} 
+        />
         <DropFile
           id="predict_dropZone"
           onDrop={this.handlePredictionSelect}
@@ -133,16 +140,17 @@ class App extends Component {
               : "Drop prediction here"
           }
         />
-        <SubmitButton clicked={this.handleTrain} label={"Train"} />
-        <CancelButton label={"Download"} />
-        <EditButton label={"Upload"} />
-        <ClickButton
-          onClick={this.handlePredict}
-          message="Predict"
+        <EditButton 
+          label={"Upload"} 
+        />
+        <SubmitButton
           clicked={this.handlePredict}
           label="Predict"
         />
-        <SubmitButton clicked={this.handleDownload} label="Download" />
+        <SubmitButton 
+          clicked={this.handleDownload} 
+          label="Download" 
+        />
       </div>
     );
   }
