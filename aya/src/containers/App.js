@@ -20,7 +20,7 @@ class App extends Component {
       dataDim:null,
       inputData:[],
       inputLabel:[],
-      modelTrained:[],
+      modelTrained:null,
       predData:[],
       predFiles:null,
       predictions: null,
@@ -39,6 +39,7 @@ class App extends Component {
     // files is a FileList of File objects. List some properties.
     var output = [];
     for (var i = 0, f; (f = files[i])&&i<4; i++) {
+      console.log(f.type)
       if((f.type==='text/csv')||(f.type==='text/plain')){ 
         output.push(
           <li key={'f'+i.toString()+'_'+f.name}>
@@ -54,13 +55,15 @@ class App extends Component {
           // This callback will mutate the state through setState
           var rawData=event.target.result;
           var arrData=rawData.split('\n').slice(1).map(row=>row.split(','));
+
           container.setState((prevState, props) => ({
             inputData: prevState.inputData.concat(arrData.map(row=>row.slice(0,-1))),
             inputLabel: prevState.inputLabel.concat(arrData.map(row=>row.slice(-1)))
-          }));
-          console.log('Data loading complete!')
+          }))
+          
         };
         reader.readAsText(f);
+        console.log('Data loading complete!')
       };
     };  
     this.setState({
@@ -122,26 +125,26 @@ class App extends Component {
   }
 
   handleTrain() {
-    var model
-    if(this.state.modelTrained!=null){
-      model = tf.sequential();
-      model.add(tf.layers.dense({units: 20, activation: 'relu', inputShape: [this.state.inputData[0].length]}));
+    if(this.state.modelTrained==null){
+      var model = tf.sequential();
+      model.add(tf.layers.dense({units: 100, activation: 'sigmoid', inputShape: [this.state.inputData[0].length]}));
+      model.add(tf.layers.dense({units: 100, activation: 'sigmoid'}));
       model.add(tf.layers.dense({units: 1, activation: 'sigmoid'}));
-      model.compile({optimizer: 'sgd', loss: 'binaryCrossentropy'});
+      model.compile({optimizer: 'adam', loss: 'binaryCrossentropy'});
     }else{
       model = this.state.modelTrained;
     }
     var xs=tf.tensor2d(this.state.inputData)
     var ys=tf.tensor2d(this.state.inputLabel)
     model.fit(xs, ys, {
-      epochs: 500,
+      epochs: 100,
       callbacks: {
         onEpochEnd: async (epoch, log) => {
           console.log(`Epoch ${epoch}: loss = ${log.loss}`);
         }
       }
-    })
-    this.setState({modelTrained:model})
+    }).then(r=>{this.setState({modelTrained:model})})
+    
     console.log("Trained :)");
   }
 
