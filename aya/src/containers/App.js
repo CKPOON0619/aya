@@ -7,17 +7,20 @@ import "./App.css";
 class App extends Component {
   constructor(props) {
     super(props);
+    this.handleModelSelect = this.handleModelSelect.bind(this);
+    this.handleModelUpload = this.handleModelUpload.bind(this);
     this.handleInputSelect = this.handleInputSelect.bind(this);
     this.handlePredictionSelect = this.handlePredictionSelect.bind(this);
     this.handleTrain = this.handleTrain.bind(this);
     this.handlePredict = this.handlePredict.bind(this);
     this.handleDownload = this.handleDownload.bind(this);
 
-
     this.state = {
       inputs: null,
       dataDim:null,
       inputData:[],
+      inputModel:null,
+      inputModelFiles:[],
       inputLabel:[],
       modelTrained:null,
       predData:[],
@@ -27,6 +30,51 @@ class App extends Component {
       predicted: false,
       download: null
     };
+  }
+
+  handleModelSelect(evt) {
+    evt.stopPropagation();
+    evt.preventDefault();
+
+    var container=this;//Get reference to the container.
+    var files = evt.dataTransfer.files; // FileList object.
+    // files is a FileList of File objects. List some properties.
+    var output = [];
+    for (var i = 0, f; (f = files[i])&&i<4; i++) {
+      console.log(f.type)
+    if((f.type==='application/json')||(f.type==='application/octet-stream')){ 
+        output.push(
+          <li key={'f'+i.toString()+'_'+f.name}>
+              <strong> 
+                  {escape(f.name)}
+              </strong> 
+              ( {f.type || 'n/a'} ) - {f.size} bytes last modified: {f.lastModifiedDate.toLocaleDateString()}
+          </li>
+        )
+
+        console.log('Model located!')
+      };
+    };  
+
+    this.setState({
+      inputModel: evt.dataTransfer.files,
+      inputModelFiles: (
+        <ul>
+          {output.length > 0
+            ? output
+            : "Drop your model(.bin + .json) here"}
+        </ul>
+      )
+    });
+  }
+
+  handleModelUpload(evt) {
+    tf.loadModel(
+      this.state.inputModel[1].type==='application/json'?tf.io.browserFiles([this.state.inputModel[1], this.state.inputModel[0]]):tf.io.browserFiles([this.state.inputModel[0], this.state.inputModel[1]])
+    ).then(model=>{
+      this.setState({modelTrained:model})
+      console.log('Model loaded!')
+    })
   }
 
   handleInputSelect(evt) {
@@ -65,6 +113,7 @@ class App extends Component {
         console.log('Data loading complete!')
       };
     };  
+
     this.setState({
       inputs: evt.dataTransfer.files,
       inputFilesLst: (
@@ -76,6 +125,7 @@ class App extends Component {
       )
     });
   }
+
   handlePredictionSelect(evt) {
     evt.stopPropagation();
     evt.preventDefault();
@@ -116,7 +166,11 @@ class App extends Component {
       )
     });
   }
-
+  handleModelDragOver(evt) {
+    evt.stopPropagation();
+    evt.preventDefault();
+    evt.dataTransfer.dropEffect = "copy"; // Explicitly show this is a copy.
+  }
   handleFileDragOver(evt) {
     evt.stopPropagation();
     evt.preventDefault();
@@ -146,7 +200,7 @@ class App extends Component {
       }
     }).then(r=>{this.setState({modelTrained:model})})
     
-    console.log("Trained :)");
+    console.log("Training... :)");
   }
 
   handlePredict() {
@@ -157,7 +211,7 @@ class App extends Component {
     
   }
   handleModelDownload() {
-    this.state.modelTrained.save('downloads://my-model-1')
+    this.state.modelTrained.save('downloads://Aya-knows')
   }
   handleDownload() {
     this.state.predictions.data().then(X =>{ 
@@ -182,6 +236,20 @@ class App extends Component {
         <header className="App-header">
           <h1>Aya</h1>
         </header>
+        <DropFile
+          id="model_dropZone"
+          onDrop={this.handleModelSelect}
+          onDragOver={this.handleModelDragOver}
+          list={
+            this.state.inputModelFiles
+              ? this.state.inputModelFiles
+              : "Drop saved model here"
+          }
+        />
+        <SubmitButton 
+          clicked={this.handleModelUpload}
+          label="Load model"
+        />
         <DropFile
           id="input_dropZone"
           onDrop={this.handleInputSelect}
@@ -208,7 +276,7 @@ class App extends Component {
         />
         <SubmitButton 
           clicked={this.handleModelDownload}
-          label={"Save Model"} 
+          label="Save Model"
         />
         <SubmitButton
           clicked={this.handlePredict}
