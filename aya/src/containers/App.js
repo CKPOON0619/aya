@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import DropFile from "../components/Dropfile/DropFile";
 import SubmitButton from "../components/Buttons/SubmitButton/SubmitButton";
-import EditButton from "../components/Buttons/EditButton/EditButton";
 import * as tf from '@tensorflow/tfjs';
 import "./App.css";
 
@@ -139,7 +138,7 @@ class App extends Component {
     var xs=tf.tensor2d(this.state.inputData)
     var ys=tf.tensor2d(this.state.inputLabel)
     model.fit(xs, ys, {
-      epochs: 100,
+      epochs: 5,
       callbacks: {
         onEpochEnd: async (epoch, log) => {
           console.log(`Epoch ${epoch}: loss = ${log.loss}`);
@@ -157,7 +156,9 @@ class App extends Component {
     console.log("Prediction made!")
     
   }
-
+  handleModelDownload() {
+    this.state.modelTrained.save('downloads://my-model-1')
+  }
   handleDownload() {
     this.state.predictions.data().then(X =>{ 
       var FileSaver = require('file-saver');
@@ -205,8 +206,9 @@ class App extends Component {
               : "Drop prediction here"
           }
         />
-        <EditButton 
-          label={"Upload"} 
+        <SubmitButton 
+          clicked={this.handleModelDownload}
+          label={"Save Model"} 
         />
         <SubmitButton
           clicked={this.handlePredict}
