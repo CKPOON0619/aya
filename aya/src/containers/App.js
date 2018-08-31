@@ -127,8 +127,10 @@ class App extends Component {
   handleTrain() {
     if(this.state.modelTrained==null){
       var model = tf.sequential();
-      model.add(tf.layers.dense({units: 100, activation: 'sigmoid', inputShape: [this.state.inputData[0].length]}));
-      model.add(tf.layers.dense({units: 100, activation: 'sigmoid'}));
+      model.add(tf.layers.dense({units: 1000, activation: 'sigmoid', inputShape: [this.state.inputData[0].length]}));
+      model.add(tf.layers.dense({units: 500, activation: 'relu'}));
+      model.add(tf.layers.dense({units: 100, activation: 'relu'}));
+      model.add(tf.layers.dense({units: 20, activation: 'relu'}));
       model.add(tf.layers.dense({units: 1, activation: 'sigmoid'}));
       model.compile({optimizer: 'adam', loss: 'binaryCrossentropy'});
     }else{
