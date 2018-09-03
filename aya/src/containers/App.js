@@ -9,6 +9,7 @@ class App extends Component {
     super(props);
     this.handleModelSelect = this.handleModelSelect.bind(this);
     this.handleModelUpload = this.handleModelUpload.bind(this);
+    this.handleModelDownload = this.handleModelDownload.bind(this);
     this.handleInputSelect = this.handleInputSelect.bind(this);
     this.handlePredictionSelect = this.handlePredictionSelect.bind(this);
     this.handleTrain = this.handleTrain.bind(this);
@@ -36,7 +37,6 @@ class App extends Component {
     evt.stopPropagation();
     evt.preventDefault();
 
-    var container=this;//Get reference to the container.
     var files = evt.dataTransfer.files; // FileList object.
     // files is a FileList of File objects. List some properties.
     var output = [];
@@ -180,10 +180,19 @@ class App extends Component {
   handleTrain() {
     if(this.state.modelTrained==null){
       var model = tf.sequential();
-      model.add(tf.layers.dense({units: 1000, activation: 'sigmoid', inputShape: [this.state.inputData[0].length]}));
+      model.add(tf.layers.batchNormalization({inputShape: [this.state.inputData[0].length]}))
+      model.add(tf.layers.dense({units: 1000, activation: 'sigmoid'}));
+      model.add(tf.layers.dropout({}));
+      model.add(tf.layers.batchNormalization({center:true}))
       model.add(tf.layers.dense({units: 500, activation: 'relu'}));
+      model.add(tf.layers.dropout({}));
+      model.add(tf.layers.batchNormalization({}))
       model.add(tf.layers.dense({units: 100, activation: 'relu'}));
+      model.add(tf.layers.dropout({}));
+      model.add(tf.layers.batchNormalization({}))
       model.add(tf.layers.dense({units: 20, activation: 'relu'}));
+      model.add(tf.layers.dropout({}));
+      model.add(tf.layers.batchNormalization({}))
       model.add(tf.layers.dense({units: 1, activation: 'sigmoid'}));
       model.compile({optimizer: 'adam', loss: 'binaryCrossentropy'});
     }else{
