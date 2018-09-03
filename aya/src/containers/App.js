@@ -2,7 +2,9 @@ import React, { Component } from "react";
 import DropFile from "../components/Dropfile/DropFile";
 import SubmitButton from "../components/Buttons/SubmitButton/SubmitButton";
 import * as tf from '@tensorflow/tfjs';
+import makeModel from "../Models/model"
 import "./App.css";
+import { promises } from "fs";
 
 class App extends Component {
   constructor(props) {
@@ -32,39 +34,26 @@ class App extends Component {
       download: null
     };
   }
-
+  readUploadedFileAsText = (inputFile) => {
+    const temporaryFileReader = new FileReader();
+  
+    return new Promise((resolve, reject) => {
+      temporaryFileReader.onerror = () => {
+        temporaryFileReader.abort();
+        reject(new DOMException("Problem parsing input file."));
+      };
+  
+      temporaryFileReader.onload = () => {
+        resolve(temporaryFileReader.result);
+      };
+      temporaryFileReader.readAsText(inputFile);
+    });
+  }
   handleModelSelect(evt) {
     evt.stopPropagation();
     evt.preventDefault();
-
-    var files = evt.dataTransfer.files; // FileList object.
-    // files is a FileList of File objects. List some properties.
-    var output = [];
-    for (var i = 0, f; (f = files[i])&&i<4; i++) {
-      console.log(f.type)
-    if((f.type==='application/json')||(f.type==='application/octet-stream')){ 
-        output.push(
-          <li key={'f'+i.toString()+'_'+f.name}>
-              <strong> 
-                  {escape(f.name)}
-              </strong> 
-              ( {f.type || 'n/a'} ) - {f.size} bytes last modified: {f.lastModifiedDate.toLocaleDateString()}
-          </li>
-        )
-
-        console.log('Model located!')
-      };
-    };  
-
     this.setState({
-      inputModel: evt.dataTransfer.files,
-      inputModelFiles: (
-        <ul>
-          {output.length > 0
-            ? output
-            : "Drop your model(.bin + .json) here"}
-        </ul>
-      )
+      inputModel: evt.dataTransfer.files
     });
   }
 
@@ -80,90 +69,16 @@ class App extends Component {
   handleInputSelect(evt) {
     evt.stopPropagation();
     evt.preventDefault();
-
-    var container=this;//Get reference to the container.
-    var files = evt.dataTransfer.files; // FileList object.
-    // files is a FileList of File objects. List some properties.
-    var output = [];
-    for (var i = 0, f; (f = files[i])&&i<4; i++) {
-      console.log(f.type)
-      if((f.type==='text/csv')||(f.type==='text/plain')){ 
-        output.push(
-          <li key={'f'+i.toString()+'_'+f.name}>
-              <strong> 
-                  {escape(f.name)}
-              </strong> 
-              ( {f.type || 'n/a'} ) - {f.size} bytes last modified: {f.lastModifiedDate.toLocaleDateString()}
-          </li>
-        )
-        var reader = new FileReader();
-        reader.onload = function(event) {
-          // The data will be read within this callback.
-          // This callback will mutate the state through setState
-          var rawData=event.target.result;
-          var arrData=rawData.split('\n').slice(1).map(row=>row.split(','));
-
-          container.setState((prevState, props) => ({
-            inputData: prevState.inputData.concat(arrData.map(row=>row.slice(0,-1))),
-            inputLabel: prevState.inputLabel.concat(arrData.map(row=>row.slice(-1)))
-          }))
-          
-        };
-        reader.readAsText(f);
-        console.log('Data loading complete!')
-      };
-    };  
-
     this.setState({
-      inputs: evt.dataTransfer.files,
-      inputFilesLst: (
-        <ul>
-          {output.length > 0
-            ? output
-            : "Drop your training inputs(.csv/.txt) here"}
-        </ul>
-      )
+      inputs: evt.dataTransfer.files
     });
   }
 
   handlePredictionSelect(evt) {
     evt.stopPropagation();
     evt.preventDefault();
-    var container=this;//Get reference to the container.
-    var files = evt.dataTransfer.files; // FileList object.
-    // files is a FileList of File objects. List some properties.
-    var output = [];
-    for (var i = 0, f; (f = files[i]) && i < 4; i++) {
-      if (f.type === "text/csv" || f.type === "text/plain"){
-        output.push(
-          <li key={"f" + i.toString() + "_" + f.name}>
-            <strong>{escape(f.name)}</strong>( {f.type || "n/a"} ) - {f.size}{" "}
-            bytes last modified: {f.lastModifiedDate.toLocaleDateString()}
-          </li>
-        );
-      }
-      var reader = new FileReader();
-      reader.onload = function(event) {
-        // The data will be read within this callback.
-        // This callback will mutate the state through setState
-        var rawData=event.target.result;
-        var arrData=rawData.split('\n').slice(1).map(row=>row.split(','));
-        container.setState((prevState, props) => ({
-          predData: prevState.inputData.concat(arrData),
-        }));
-      };
-      reader.readAsText(f);
-    }
-    
     this.setState({
-      predFiles: evt.dataTransfer.files,
-      predictionFilesLst: (
-        <ul>
-          {output.length > 0
-            ? output
-            : "Drop your dataset for prediction(.csv/.txt) here"}
-        </ul>
-      )
+      predFiles: evt.dataTransfer.files
     });
   }
   handleModelDragOver(evt) {
@@ -178,46 +93,61 @@ class App extends Component {
   }
 
   handleTrain() {
-    if(this.state.modelTrained==null){
-      var model = tf.sequential();
-      model.add(tf.layers.batchNormalization({inputShape: [this.state.inputData[0].length]}))
-      model.add(tf.layers.dense({units: 1000, activation: 'sigmoid'}));
-      model.add(tf.layers.dropout({}));
-      model.add(tf.layers.batchNormalization({center:true}))
-      model.add(tf.layers.dense({units: 500, activation: 'relu'}));
-      model.add(tf.layers.dropout({}));
-      model.add(tf.layers.batchNormalization({}))
-      model.add(tf.layers.dense({units: 100, activation: 'relu'}));
-      model.add(tf.layers.dropout({}));
-      model.add(tf.layers.batchNormalization({}))
-      model.add(tf.layers.dense({units: 20, activation: 'relu'}));
-      model.add(tf.layers.dropout({}));
-      model.add(tf.layers.batchNormalization({}))
-      model.add(tf.layers.dense({units: 1, activation: 'sigmoid'}));
-      model.compile({optimizer: 'adam', loss: 'binaryCrossentropy'});
-    }else{
-      model = this.state.modelTrained;
-    }
-    var xs=tf.tensor2d(this.state.inputData)
-    var ys=tf.tensor2d(this.state.inputLabel)
-    model.fit(xs, ys, {
-      epochs: 5,
-      callbacks: {
-        onEpochEnd: async (epoch, log) => {
-          console.log(`Epoch ${epoch}: loss = ${log.loss}`);
-        }
+    var files = this.state.inputs; // FileList object.
+    // files is a FileList of File objects. List some properties.
+    var readers=[]
+    for (var i = 0, f; (f = files[i])&&i<4; i++) {
+      if((f.type==='text/csv')||(f.type==='text/plain')){ 
+        readers.push(this.readUploadedFileAsText(f))
+      };
+    }; 
+    Promise.all(readers).then(filesRead=>{
+      filesRead.forEach(f=>{
+        var arrData=f.split('\n').slice(1).map(row=>row.split(','));
+        this.setState((prevState, props) => ({
+          inputData: prevState.inputData.concat(arrData.map(row=>row.slice(0,-1))),
+          inputLabel: prevState.inputLabel.concat(arrData.map(row=>row.slice(-1)))
+        }))
+      })
+      console.log('Data uploaded. Training model...')
+      if(this.state.modelTrained==null){
+        var model=makeModel([this.state.inputData[0].length])
+      }else{
+        model = this.state.modelTrained;
       }
-    }).then(r=>{this.setState({modelTrained:model})})
-    
-    console.log("Training... :)");
+      var xs=tf.tensor2d(this.state.inputData)
+      var ys=tf.tensor2d(this.state.inputLabel)
+      
+      model.fit(xs, ys, {
+        epochs: 5,
+        callbacks: {
+          onEpochEnd: async (epoch, log) => {
+            console.log(`Epoch ${epoch}: loss = ${log.loss}`);
+          }
+        }
+      }).then(r=>{this.setState({modelTrained:model})})
+    })
   }
 
   handlePredict() {
-    var predictions=this.state.modelTrained.predict(tf.tensor2d(this.state.predData))
-    predictions.print();
-    this.setState({predictions:predictions})
-    console.log("Prediction made!")
-    
+    var files = this.state.predFiles; // FileList object.
+    var readers=[];
+    for (var i = 0, f; (f = files[i]) && i < 4; i++) {
+      if (f.type === "text/csv" || f.type === "text/plain"){
+        readers.push(this.readUploadedFileAsText(f))
+      }
+    }  
+    Promise.all(readers).then(filesRead=>{
+      filesRead.forEach(f=>{
+        var arrData=f.split('\n').slice(1).map(row=>row.split(','));
+        this.setState((prevState, props) => ({
+          predData: prevState.predData.concat(arrData)
+        }))
+      })
+      var predictions=this.state.modelTrained.predict(tf.tensor2d(this.state.predData))
+      predictions.print()
+      this.setState({predictions:predictions})
+    }) 
   }
   handleModelDownload() {
     this.state.modelTrained.save('downloads://Aya-knows')
@@ -249,11 +179,8 @@ class App extends Component {
           id="model_dropZone"
           onDrop={this.handleModelSelect}
           onDragOver={this.handleModelDragOver}
-          list={
-            this.state.inputModelFiles
-              ? this.state.inputModelFiles
-              : "Drop saved model here"
-          }
+          allowedTypes={["application/json","application/octet-stream"]}
+          placeholder="Drop saved model here"
         />
         <SubmitButton 
           clicked={this.handleModelUpload}
@@ -263,35 +190,33 @@ class App extends Component {
           id="input_dropZone"
           onDrop={this.handleInputSelect}
           onDragOver={this.handleFileDragOver}
-          list={
-            this.state.inputFilesLst
-              ? this.state.inputFilesLst
-              : "Drop inputs here"
-          }
+          allowedTypes={["text/csv","text/plain"]}
+          placeholder="Drop inputs here"
         />
         <SubmitButton 
+          id="train_button"
           clicked={this.handleTrain} 
-          label={"Train"} 
+          label={"Train"}
         />
         <DropFile
           id="predict_dropZone"
           onDrop={this.handlePredictionSelect}
           onDragOver={this.handleFileDragOver}
-          list={
-            this.state.predictionFilesLst
-              ? this.state.predictionFilesLst
-              : "Drop prediction here"
-          }
+          allowedTypes={["text/csv","text/plain"]}
+          placeholder= "Drop prediction here"
         />
         <SubmitButton 
+          id="saveModel_button"
           clicked={this.handleModelDownload}
           label="Save Model"
         />
         <SubmitButton
+          id="predict_button"
           clicked={this.handlePredict}
           label="Predict"
         />
         <SubmitButton 
+          id="download_button"
           clicked={this.handleDownload} 
           label="Download" 
         />
