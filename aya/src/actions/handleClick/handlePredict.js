@@ -1,5 +1,5 @@
 
-import {readUploadedFileAsText} from "../../../../utils/fileReader"
+import {readUploadedFileAsText} from "../utils/fileReader"
 import * as tf from '@tensorflow/tfjs';
 function handlePredict() {
     var files = this.state.predFiles; // FileList object.

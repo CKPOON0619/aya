@@ -1,7 +1,7 @@
 
-import {readUploadedFileAsText} from "../../../../utils/fileReader";
+import {readUploadedFileAsText} from "../utils/fileReader";
 import * as tf from '@tensorflow/tfjs';
-import makeModel from "./Models/model";
+import makeModel from "../utils/Models/model";
 
 function handleTrain() {
     var files = this.state.inputs; // FileList object.
