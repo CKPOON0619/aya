@@ -4,10 +4,12 @@ import {ModelTrain} from "../components/Complex/ModelTrain";
 import {ModelPredict} from "../components/Complex/ModelPredict";
 import "./App.css";
 
+import LongMenu from "../components/Complex/LongMenu"
 
 class App extends Component {
   constructor(props) {
     super(props);
+    this.handleMenuClick = require("../actions/handleClick/handleMenuClick").default.bind(this);
     this.handleModelSelect = require("../actions/handleSelect/handleModelSelect").default.bind(this);
     this.handleModelUpload = require("../actions/handleClick/handleModelUpload").default.bind(this);
     this.handleModelDownload = require("../actions/handleClick/handleModelDownload").default.bind(this);
@@ -19,6 +21,7 @@ class App extends Component {
     this.handleFileDragOver=require("../actions/handleDragOver/handleFileDragOver").default.bind(this);
     
     this.state = {
+      stage:"modelUpload",
       inputs: null,
       dataDim:null,
       inputData:[],
@@ -35,31 +38,48 @@ class App extends Component {
     };
   }
 
-
-  render() {
-    return (
-      <div className="App">
-        <header className="App-header">
-          <h1>Aya</h1>
-        </header>
-        <ModelUpload
+  contentStager(stage){
+    switch(stage) { 
+      case "modelUpload": { 
+         return <ModelUpload
           onDrop={this.handleModelSelect}
           onDragOver={this.handleFileDragOver}
           clicked={this.handleModelUpload}
-        />
-        <ModelTrain
+        />;
+      } 
+      case "modelTrain": { 
+         //statements;
+         return <ModelTrain
           onDrop={this.handleInputSelect}
           onDragOver={this.handleFileDragOver}
           clicked={this.handleTrain}
-        />
-        <ModelPredict 
+        />; 
+      } 
+      case "modelPredict": { 
+        //statements;
+        return <ModelPredict 
           onDrop={this.handlePredictionSelect}
           onDragOver={this.handleFileDragOver}
           clickedPredict={this.handlePredict}
           clickedSaveModel={this.handleModelDownload}
           clickedDownload={this.handleDownload}
-        />
+        />; 
+     } 
+      default: { 
+         //statements; 
+         break; 
+      } 
+    
+    }
+  }
 
+  render() {
+    return (
+      <div className="App">         
+        <header className="App-header">
+          <h1> <LongMenu pick={this.handleMenuClick}/>Aya</h1>
+        </header>
+        {this.contentStager(this.state.stage)}
       </div>
     );
   }
