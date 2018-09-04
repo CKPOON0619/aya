@@ -15,7 +15,7 @@ class DropFile extends Component {
         var files = evt.dataTransfer.files; // FileList object.
         // files is a FileList of File objects. List some properties.
         
-        for (var i = 0, f; (f = files[i])&&i<4; i++) {
+        for (let i = 0, f; (f = files[i])&&i<4; i++) {
           console.log(f.type)
           var allowed=this.props.allowedTypes.map((t)=>f.type===t).reduce((a,b)=>a+b)>0
           if(allowed){ 

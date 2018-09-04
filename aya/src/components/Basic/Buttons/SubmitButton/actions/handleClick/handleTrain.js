@@ -1,5 +1,5 @@
 
-import {readUploadedFileAsText} from "../../../../../utils/fileReader";
+import {readUploadedFileAsText} from "../../../../utils/fileReader";
 import * as tf from '@tensorflow/tfjs';
 import makeModel from "./Models/model";
 
