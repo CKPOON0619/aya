@@ -24,16 +24,11 @@ class LongMenu extends React.Component {
 
   handleClick = event => {
     this.setState({ anchorEl: event.currentTarget });
-    console.log('click')
-    console.log(event.currentTarget)
-    console.log(this.state)
   };
 
   handleClose = (pick) => {
     this.setState({ anchorEl: null });
     this.state.pick(pick)
-    console.log('close')
-    console.log(this.state)
   };
 
   render() {
@@ -41,7 +36,7 @@ class LongMenu extends React.Component {
     const open = Boolean(anchorEl);
 
     return (
-      <div>
+      <div id={this.props.id}>
         <IconButton
           aria-label="More"
           aria-owns={open ? 'long-menu' : null}
@@ -51,7 +46,6 @@ class LongMenu extends React.Component {
           <MoreVertIcon />
         </IconButton>
         <Menu
-          id="long-menu"
           anchorEl={anchorEl}
           open={open}
           onClose={this.handleClose}

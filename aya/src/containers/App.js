@@ -78,7 +78,8 @@ class App extends Component {
     return (
       <div className="App">         
         <header className="App-header">
-          <h1> <LongMenu pick={this.handleMenuClick}/>Aya</h1>
+          <h1 id="Aya">Aya</h1>
+          <LongMenu id="App-menu" pick={this.handleMenuClick}/>
         </header>
         {this.contentStager(this.state.stage)}
       </div>

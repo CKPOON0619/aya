@@ -4,4 +4,14 @@
 }
 .App-header {
   margin-top: 5%;
+  display:inline-block;
+}
+#App-menu {
+  display:inline-block;
+  position: relative;
+  bottom: 5px;
+}
+
+#Aya {
+  display:inline-block;
 }
