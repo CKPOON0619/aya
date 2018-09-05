@@ -4,15 +4,19 @@
 }
 
 #App-header {
-  position: fixed;
+  position: relative;
   left: 0;
-  width: 8em;
+  top:0%;
+  width: 100%;
+  border: 1px solid red;
+  background-color: cornflowerblue;
 }
 
 #menu-button {
   display:inline-block;
   position: relative;
   bottom: 5px;
+  
 }
 
 #Aya {

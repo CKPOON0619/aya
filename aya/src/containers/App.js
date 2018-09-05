@@ -38,6 +38,7 @@ class App extends Component {
     };
   }
 
+  //A switch that decides what to be rendered based on different stage in the state
   contentStager(stage){
     switch(stage) { 
       case "modelUpload": { 
