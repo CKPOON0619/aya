@@ -6,6 +6,7 @@ function ModelUpload(props){
       <DropFile
         id="modelUpload_dropZone"
         className="modelUpload"
+        style={props.style}
         onDrop={props.onDrop}
         onDragOver={props.onDragOver}
         allowedTypes={["application/json","application/octet-stream"]}

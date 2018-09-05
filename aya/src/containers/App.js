@@ -42,6 +42,7 @@ class App extends Component {
     switch(stage) { 
       case "modelUpload": { 
          return <ModelUpload
+          style={{width:500, height:150}}
           onDrop={this.handleModelSelect}
           onDragOver={this.handleFileDragOver}
           clicked={this.handleModelUpload}

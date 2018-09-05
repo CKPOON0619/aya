@@ -37,7 +37,7 @@ class DropFile extends Component {
     }
     render() {    
       // Setup the dnd listeners.
-      return <div className="Dropfile-dropzone" onDrop={this.handleFileSelect} onDragOver={this.handleDragOver}> 
+      return <div className="Dropfile-dropzone" onDrop={this.handleFileSelect} onDragOver={this.handleDragOver} style={this.props.style}> 
         <ul>
           {this.displayList.length > 0
             ? this.displayList
