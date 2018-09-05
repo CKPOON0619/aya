@@ -77,11 +77,13 @@ class App extends Component {
   render() {
     return (
       <div className="App">         
-        <header className="App-header">
+        <header id="App-header">
+          <LongMenu id="menu-button" pick={this.handleMenuClick}/>
           <h1 id="Aya">Aya</h1>
-          <LongMenu id="App-menu" pick={this.handleMenuClick}/>
         </header>
-        {this.contentStager(this.state.stage)}
+        <div id="stage">
+          {this.contentStager(this.state.stage)}
+        </div>
       </div>
     );
   }
