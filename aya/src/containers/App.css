@@ -4,9 +4,9 @@
 }
 
 #App-header {
-  position: relative;
+  position: fixed;
   left: 0;
-  top:0%;
+  top:0;
   width: 100%;
   border: 1px solid red;
   background-color: cornflowerblue;
@@ -16,7 +16,7 @@
   display:inline-block;
   position: relative;
   bottom: 5px;
-  
+  left:calc(-50% + 60px);
 }
 
 #Aya {
