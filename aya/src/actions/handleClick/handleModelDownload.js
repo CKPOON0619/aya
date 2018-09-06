@@ -1,5 +1,7 @@
 function handleModelDownload() {
-   this.state.modelTrained.save('downloads://Aya-knows')
+    try{
+        this.state.modelTrained.save('downloads://Aya-knows')
+    }catch(err){}
 }
 
 export default handleModelDownload;
