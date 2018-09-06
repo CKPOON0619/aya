@@ -23,6 +23,7 @@ function handleTrain() {
         var model=makeModel([this.state.inputData[0].length])
       }else{
         model = this.state.modelTrained;
+        model.compile({optimizer: 'adam', loss: 'binaryCrossentropy'});
       }
       var xs=tf.tensor2d(this.state.inputData)
       var ys=tf.tensor2d(this.state.inputLabel)

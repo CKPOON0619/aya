@@ -1,5 +1,6 @@
 import React from "react";
 import DropFile from "../Basic/Dropfile/DropFile";
+import FileDisplay from "../Basic/FilesDisplay/FileDisplay";
 import SubmitButton from "../Basic/Buttons/SubmitButton/SubmitButton";
 
 function ModelPredict(props){
@@ -12,6 +13,7 @@ function ModelPredict(props){
         onChange={props.onChange}
         multiple
       />
+      <FileDisplay files={props.files}/>
       <SubmitButton 
         id="saveModel_button"
         className="prediction"

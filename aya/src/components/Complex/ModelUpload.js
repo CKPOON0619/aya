@@ -1,5 +1,5 @@
 import React from "react";
-import FileInput from "../Basic/Input/FileInput";
+import FileDisplay from "../Basic/FilesDisplay/FileDisplay";
 import SubmitButton from "../Basic/Buttons/SubmitButton/SubmitButton";
 function ModelUpload(props){
     return <div id="ModelUpload">
@@ -11,6 +11,7 @@ function ModelUpload(props){
         onChange={props.onChange}
         multiple
       />
+      <FileDisplay files={props.files}/>
       <SubmitButton 
         id="modelUpload_Button"
         className="modelUpload"
