@@ -22,12 +22,11 @@ class App extends Component {
     
     this.state = {
       stage:"modelUpload",
-      inputs: null,
       dataDim:null,
+      inputFiles: null,
       inputData:[],
-      inputModel:null,
-      inputModelFiles:[],
       inputLabel:[],
+      modelFiles:null,
       modelTrained:null,
       predData:[],
       predFiles:null,
@@ -44,24 +43,24 @@ class App extends Component {
       case "modelUpload": { 
          return <ModelUpload
           style={{width:500, height:150}}
-          onDrop={this.handleModelSelect}
-          onDragOver={this.handleFileDragOver}
+          files={this.state.modelFiles}
+          onChange={this.handleModelSelect}
           clicked={this.handleModelUpload}
         />;
       } 
       case "modelTrain": { 
          //statements;
          return <ModelTrain
-          onDrop={this.handleInputSelect}
-          onDragOver={this.handleFileDragOver}
+          files={this.state.inputFiles}
+          onChange={this.handleInputSelect}
           clicked={this.handleTrain}
         />; 
       } 
       case "modelPredict": { 
         //statements;
         return <ModelPredict 
-          onDrop={this.handlePredictionSelect}
-          onDragOver={this.handleFileDragOver}
+          files={this.state.predFiles}
+          onChange={this.handlePredictionSelect}
           clickedPredict={this.handlePredict}
           clickedSaveModel={this.handleModelDownload}
           clickedDownload={this.handleDownload}

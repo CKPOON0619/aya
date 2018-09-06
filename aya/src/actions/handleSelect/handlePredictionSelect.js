@@ -2,7 +2,7 @@ function handlePredictionSelect(evt) {
     evt.stopPropagation();
     evt.preventDefault();
     this.setState({
-      predFiles: evt.dataTransfer.files
+      predFiles: evt.target.files
     });
   }
 export default handlePredictionSelect;

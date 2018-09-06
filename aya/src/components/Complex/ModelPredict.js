@@ -1,15 +1,16 @@
 import React from "react";
 import DropFile from "../Basic/Dropfile/DropFile";
 import SubmitButton from "../Basic/Buttons/SubmitButton/SubmitButton";
+
 function ModelPredict(props){
     return <div id="prediction">
-      <DropFile
+      <input
         id="predict_dropZone"
         className="prediction"
-        onDrop={props.onDrop}
-        onDragOver={props.onDragOver}
-        allowedTypes={["text/csv","text/plain"]}
-        placeholder= "Drop prediction here"
+        type={"file"}
+        accept={".txt"}
+        onChange={props.onChange}
+        multiple
       />
       <SubmitButton 
         id="saveModel_button"

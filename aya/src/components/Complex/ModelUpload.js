@@ -1,16 +1,15 @@
 import React from "react";
-import DropFile from "../Basic/Dropfile/DropFile";
+import FileInput from "../Basic/Input/FileInput";
 import SubmitButton from "../Basic/Buttons/SubmitButton/SubmitButton";
 function ModelUpload(props){
     return <div id="ModelUpload">
-      <DropFile
+      <input
         id="modelUpload_dropZone"
         className="modelUpload"
-        style={props.style}
-        onDrop={props.onDrop}
-        onDragOver={props.onDragOver}
-        allowedTypes={["application/json","application/octet-stream"]}
-        placeholder="Drop saved model here"
+        type={"file"}
+        accept={".json,.bin"}
+        onChange={props.onChange}
+        multiple
       />
       <SubmitButton 
         id="modelUpload_Button"

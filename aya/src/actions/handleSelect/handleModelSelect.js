@@ -2,7 +2,7 @@ function handleModelSelect(evt) {
     evt.stopPropagation();
     evt.preventDefault();
     this.setState({
-      inputModel: evt.dataTransfer.files
+      modelFiles: evt.target.files
     });
   }
 export default handleModelSelect;

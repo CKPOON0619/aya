@@ -6,16 +6,34 @@ class DropFile extends Component {
         super(props);
         this.handleFileSelect = this.handleFileSelect.bind(this);
         this.handleDragOver=this.handleDragOver.bind(this);
-        this.displayList=[]
+        this.displayList=[];        
+        // files is a FileList of File objects. List some properties.
+        
+        if(props.files) {
+          for (let i = 0, f; (f = props.files[i])&&i<4; i++) {
+            console.log(f.type)
+            var allowed=props.allowedTypes.map((t)=>f.type===t).reduce((a,b)=>a+b)>0
+            if(allowed){ 
+              this.displayList.push(
+                <li key={'f'+i.toString()+'_'+f.name}>
+                    <strong> 
+                        {escape(f.name)}
+                    </strong> 
+                    ( {f.type || 'n/a'} ) - {f.size} bytes last modified: {f.lastModifiedDate.toLocaleDateString()}
+                </li>
+              )
+            };
+          }; 
+        }
       }
     handleFileSelect(evt) {
         //evt.stopPropagation();
         //evt.preventDefault();
         this.props.onDrop(evt);
         var files = evt.dataTransfer.files; // FileList object.
+        console.log(evt)
         // files is a FileList of File objects. List some properties.
-        
-        for (let i = 0, f; (f = files[i])&&i<4; i++) {
+        for (let i = 0, f; (f = files[i])&&this.displayList.length<4; i++) {
           console.log(f.type)
           var allowed=this.props.allowedTypes.map((t)=>f.type===t).reduce((a,b)=>a+b)>0
           if(allowed){ 
@@ -37,7 +55,7 @@ class DropFile extends Component {
     }
     render() {    
       // Setup the dnd listeners.
-      return <div className="Dropfile-dropzone" onDrop={this.handleFileSelect} onDragOver={this.handleDragOver} style={this.props.style}> 
+      return <div className="Dropfile-dropzone" onDrop={this.handleFileSelect} onDragOver={this.handleDragOver} style={this.props.style} accept={".txt"}> 
         <ul>
           {this.displayList.length > 0
             ? this.displayList

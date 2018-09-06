@@ -2,7 +2,7 @@ function handleInputSelect(evt) {
     evt.stopPropagation();
     evt.preventDefault();
     this.setState({
-      inputs: evt.dataTransfer.files
+      inputFiles: evt.target.files
     });
   }
 export default handleInputSelect;

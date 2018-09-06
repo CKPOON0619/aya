@@ -4,13 +4,11 @@ import * as tf from '@tensorflow/tfjs';
 import makeModel from "../utils/Models/model";
 
 function handleTrain() {
-    var files = this.state.inputs; // FileList object.
+    var files = this.state.inputFiles; // FileList object.
     // files is a FileList of File objects. List some properties.
     var readers=[]
     for (var i = 0, f; (f = files[i])&&i<4; i++) {
-      if((f.type==='text/csv')||(f.type==='text/plain')){ 
-        readers.push(readUploadedFileAsText(f))
-      };
+      readers.push(readUploadedFileAsText(f))
     }; 
     Promise.all(readers).then(filesRead=>{
       filesRead.forEach(f=>{
