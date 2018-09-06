@@ -21,7 +21,9 @@ function handlePredict() {
       predictions.print()
       this.setState({predictions:predictions})
     })
-  }catch(err){}; 
+  }catch(err){
+    console.warn(err)
+  }; 
 }
 
 export default handlePredict;

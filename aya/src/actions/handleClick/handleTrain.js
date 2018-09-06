@@ -38,6 +38,8 @@ function handleTrain() {
           }
         }).then(r=>{this.setState({modelTrained:model})})
       })
-    }catch(err){};
+    }catch(err){
+      console.warn(err)
+    };
   }
 export default handleTrain;

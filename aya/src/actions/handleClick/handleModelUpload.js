@@ -8,7 +8,7 @@ function handleModelUpload(evt) {
       this.setState({modelTrained:model})
       console.log('Model loaded!')
     })}catch(err){
-
+      console.warn(err)
     }
   }
 export default handleModelUpload;
