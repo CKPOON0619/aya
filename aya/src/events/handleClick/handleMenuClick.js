@@ -1,5 +1,5 @@
 function handleMenuClick(pick){
-  if(typeof pick==="string") this.setState({ stage: pick });
+  if(typeof pick==="string") return { stage: pick };
 };
 
 export default handleMenuClick;
