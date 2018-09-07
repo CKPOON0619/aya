@@ -1,5 +1,4 @@
 import React from "react";
-import DropFile from "../Basic/Dropfile/DropFile";
 import FileDisplay from "../Basic/FilesDisplay/FileDisplay";
 import SubmitButton from "../Basic/Buttons/SubmitButton/SubmitButton";
 

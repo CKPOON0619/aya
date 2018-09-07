@@ -1,7 +1,7 @@
 function handleModelDownload(state) {
     
     try{
-        this.store.getState().modelTrained.save('downloads://Aya-knows')
+        this.store.getState().modelTrained.save('downloads://Aya')
     }catch(err){
         console.warn(err)
     }

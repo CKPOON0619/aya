@@ -58,17 +58,5 @@ export const UploadPred=(predictions)=>{
     }
 }
 
-export const InputSelect=(evt)=>{
-    return {
-        type:'INPUT_SELECT',
-        event:evt
-    }
-}
-export const PredictionSelect=(evt)=>{
-    return {
-        type:'PREDICTION_SELECT',
-        event:evt
-    }
-}
 
 

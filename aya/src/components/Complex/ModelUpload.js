@@ -2,6 +2,8 @@ import React from "react";
 import FileDisplay from "../Basic/FilesDisplay/FileDisplay";
 import SubmitButton from "../Basic/Buttons/SubmitButton/SubmitButton";
 function ModelUpload(props){
+    console.log('here')
+    console.log(props.files)
     return <div id="ModelUpload">
       <input
         id="modelUpload_dropZone"

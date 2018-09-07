@@ -7,7 +7,6 @@ function handleTrain() {
     var state=this.store.getState();
     try{
       var files = state.inputFiles; // FileList object.
-      console.log(files)
       // files is a FileList of File objects. List some properties.
       var readers=[];
       var inputData=[];
@@ -16,16 +15,13 @@ function handleTrain() {
 
 
       for (var i = 0, f; (f = files[i])&&i<4; i++) {
-        this.store.dispatch(actions.ReadingFiles());
+        this.store.dispatch(actions.ModelFitting())
         readers.push(readUploadedFileAsText(f));
       }; 
 
 
       Promise.all(readers).then(filesRead=>{
         console.log('Reading complete! Trainig model...')
-        
-        this.store.dispatch(actions.FilesRead());
-
         filesRead.forEach(f=>{
           var arrData=f.split('\n').slice(1).map(row=>row.split(','));
           inputData=inputData.concat(arrData.map(row=>row.slice(0,-1)));
@@ -40,8 +36,6 @@ function handleTrain() {
         }
         var xs=tf.tensor2d(inputData)
         var ys=tf.tensor2d(inputLabel)
-        
-        this.store.dispatch(actions.ModelFitting())
         console.log('training....')
         return model.fit(xs, ys, {
           epochs: 5,
