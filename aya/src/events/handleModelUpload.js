@@ -14,6 +14,8 @@ function handleModelUpload() {
       this.store.dispatch(actions.ModelUploaded(model));
       console.log('Model loaded!')
     })}catch(err){
+      this.store.dispatch(actions.ModelUploadFailed());
+      console.log('Model loading failed!')
       console.warn(err)
     }
   }

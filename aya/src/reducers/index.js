@@ -31,6 +31,8 @@ export default (state=initial_state,action)=>{
             console.log('files selected')
             updates[action.key]=action.files;
             return Object.assign({},state,updates)
+        case 'MODEL_UPLOAD_FAILED':
+            return Object.assign({},state,{modelStatus:'MODEL_UPLOAD_FAILED'}) //placeholder
         case 'MODEL_UPLOAD_S1':
             return Object.assign({},state,{modelStatus:'MODEL_UPLOAD_S1'}) //placeholder
         case 'MODEL_UPLOAD_S2':

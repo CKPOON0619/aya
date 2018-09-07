@@ -13,9 +13,15 @@ export const FilesSelect=(evt,key)=>{
         files:evt.target.files
     }
 }
+export const ModelUploadFailed=(evt,key)=>{
+    return {
+        type:'MODEL_UPLOAD_FAILED'
+    }
+}
 export const ModelUploading=(evt)=>{
     return {
         type:'MODEL_UPLOAD_S1'
+        
     }
 }
 

@@ -60,17 +60,43 @@ class App extends Component {
   }
 
   render() {
+    let state=this.store.getState();
     return (
       <div className="App">         
         <header id="App-header">
           <LongMenu id="menu-button" pick={this.handleMenuClick}/>
           <h1 id="Aya">Aya</h1>
-          {(this.store.getState().stage==="modelUpload"&&this.store.getState().modelStatus==="MODEL_UPLOAD_S1")?<ProgressBar color="secondary"/>:<div/>}
-          {(this.store.getState().stage==="modelTrain"&&this.store.getState().trainingStatus!=="MODEL_FITTED"&&this.store.getState().trainingStatus!==null)?<ProgressBar color="secondary"/>:<div/>}
-          {(this.store.getState().stage==="modelPred"&&this.store.getState().predStatus!=="FILES_READ"&&this.store.getState().predStatus!==null)?<ProgressBar color="secondary"/>:<div/>}
+          {
+            (
+              state.stage==="modelUpload"&&
+              state.modelStatus!=="MODEL_UPLOAD_S2"&&
+              state.modelStatus!==null&&
+              state.modelStatus!=="MODEL_UPLOAD_FAILED"
+            )?
+            <ProgressBar color="secondary"/>:
+            <div/>
+          }
+          {
+            (
+              state.stage==="modelTrain"&&
+              state.trainingStatus!=="MODEL_FITTED"&&
+              state.trainingStatus!==null
+            )?
+            <ProgressBar color="secondary"/>:
+            <div/>
+          }
+          {
+            (
+              state.stage==="modelPred"&&
+              state.predStatus!=="FILES_READ"&&
+              state.predStatus!==null
+            )?
+            <ProgressBar color="secondary"/>:
+            <div/>
+          }
         </header>
         <div id="stage">
-          {this.contentStager(this.store.getState().stage)}
+          {this.contentStager(state.stage)}
         </div>
       </div>
     );
