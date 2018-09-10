@@ -12,7 +12,7 @@ class App extends Component {
     super(props);
     this.store=props.store;
     this.handleMenuClick = require("../events/handleMenuClick").default.bind(this);
-    this.handleModelSelect = require("../events/handleModelSelect").default.bind(this);
+    this.handleFileSelect = require("../events/handleFileSelect").default.bind(this);
     this.handleModelUpload = require("../events/handleModelUpload").default.bind(this);
     this.handleModelDownload = require("../events/handleModelDownload").default.bind(this);
     this.handleInputSelect = require("../events/handleInputSelect").default.bind(this);
@@ -20,6 +20,7 @@ class App extends Component {
     this.handleTrain = require("../events/handleTrain").default.bind(this);
     this.handlePredict = require("../events/handlePredict").default.bind(this);
     this.handleDownload = require("../events/handleDownload").default.bind(this);
+    this.handleFileDrops = require("../events/handleFileDrops").default.bind(this);
   }
 
   //A switch that decides what to be rendered based on different stage in the state
@@ -29,24 +30,25 @@ class App extends Component {
         return <ModelUpload
           style={{width:500, height:150}}
           files={this.store.getState().modelFiles}
-          onChange={this.handleModelSelect}
+          onDrop={(evt)=>this.handleFileDrops(evt,"modelFiles",["application/json","application/octet-stream"],2)}
+          onChange={(evt)=>this.handleFileSelect(evt,"modelFiles",["application/json","application/octet-stream"],2)}
           clicked={this.handleModelUpload}
         />;
       } 
       case "modelTrain": { 
-         //statements;
         return <ModelTrain
           files={this.store.getState().inputFiles}
-          onChange={this.handleInputSelect}
+          onDrop={(evt)=>this.handleFileDrops(evt,"inputFiles",["text/plain"],4)}
+          onChange={(evt)=>this.handleFileSelect(evt,"inputFiles",["text/plain"],4)}
           clicked={this.handleTrain}
         />; 
       } 
       case "modelPredict": { 
-        //statements;
         return <ModelPredict 
           files={this.store.getState().predFiles}
           onChange={this.handlePredictionSelect}
-          clickedPredict={this.handlePredict}
+          onDrop={(evt)=>this.handleFileDrops(evt,"predFiles",["text/plain"],1)}
+          onChange={(evt)=>this.handleFileSelect(evt,"predFiles",["text/plain"],1)}
           clickedSaveModel={this.handleModelDownload}
           clickedDownload={this.handleDownload}
         />; 

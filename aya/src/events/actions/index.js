@@ -6,22 +6,38 @@ export const MenuClick=(pick)=>{
         pick:pick
     }
 }
-export const FilesSelect=(evt,key)=>{
+export const FilesSelect=(evt,key,allowedTypes,limit)=>{
+    var Files=evt.target.files
+    var filesSaved=[];
+    var count=0;
+    if(Files) {
+        for (let i = 0, f; (f = Files[i])&&count<limit; i++) {
+            if(allowedTypes.map((t)=>f.type===t).reduce((a,b)=>a+b)>0){
+                filesSaved.push(f)
+                count++
+            }
+        }
+    }
     return {
         type:'FILES_SELECT',
         key:key,
-        files:evt.target.files
+        files:filesSaved
     }
 }
 
 export const FileDrops=(evt,key,allowedTypes,limit)=>{
     var Files=evt.dataTransfer.files
     var filesSaved=[];
+    var count=0;
     if(Files) {
-        for (let i = 0, f; (f = Files[i])&&i<limit; i++) {
-            if(allowedTypes.map((t)=>f.type===t).reduce((a,b)=>a+b)>0) filesSaved.push(f);
+        for (let i = 0, f; (f = Files[i])&&count<limit; i++) {
+            if(allowedTypes.map((t)=>f.type===t).reduce((a,b)=>a+b)>0){
+                filesSaved.push(f)
+                count++
+            };
         }
     }
+    console.log(filesSaved)
     return {
         type:'FILES_SELECT',
         key:key,

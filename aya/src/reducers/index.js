@@ -31,11 +31,6 @@ export default (state=initial_state,action)=>{
             console.log('files selected')
             updates[action.key]=action.files;
             return Object.assign({},state,updates)
-        case 'FILE_DROPS':
-            let updates=new Object();
-            console.log('files dropped')
-            updates[action.key]=action.files;
-            return Object.assign({},state,updates)
         case 'MODEL_UPLOAD_FAILED':
             return ({...state,
                 modelStatus:'MODEL_UPLOAD_FAILED'
