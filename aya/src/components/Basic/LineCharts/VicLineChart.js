@@ -17,6 +17,7 @@ class VicLineChart extends Component {
         duration: 1000,
         onLoad: { duration: 1000 }
       }}
+      interpolation="natural"
       style={{
         data: { stroke: this.props.color[key] },
         parent: { border: "1px solid #ccc"}
@@ -26,4 +27,5 @@ class VicLineChart extends Component {
   </VictoryChart>}
 }
 
-export default VicLineChart
+export default VicLineChart;
+
