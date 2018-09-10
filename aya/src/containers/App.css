@@ -9,6 +9,7 @@
   top:0;
   width: 100%;
   border: 1px solid red;
+  z-index: 999;
   background-color: cornflowerblue;
 }
 
@@ -27,10 +28,9 @@
 }
 
 #stage{
-  display:inline;
+  display:inline-block;
   position: absolute;
   top: 50%;
-  left: 50%;
+  left: 30%;
   /* bring your own prefixes */
-  transform: translate(-50%, -50%);
 }
