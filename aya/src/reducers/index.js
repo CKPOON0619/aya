@@ -6,6 +6,8 @@ const initial_state={
     inputFiles: null,
     inputData:[],
     inputLabel:[],
+    trainingLog:[],
+    epoch:0,
     modelFiles:null,
     modelTrained:null,
     predData:[],
@@ -27,7 +29,7 @@ export default (state=initial_state,action)=>{
                 stage:action.pick
             }) 
         case 'FILES_SELECT':
-            let updates=new Object();
+            let updates={};
             console.log('files selected')
             updates[action.key]=action.files;
             return Object.assign({},state,updates)
@@ -55,6 +57,12 @@ export default (state=initial_state,action)=>{
         case 'MODEL_FITTING':
             return ({...state,
                 trainingStatus:'MODEL_FITTING'
+            })  //placeholder
+        case 'TRAINING_LOG':
+            console.log('action log',action.log)
+            return ({...state,
+                trainingLog:state.trainingLog.concat(action.log),
+                epoch:((action.log.epoch>state.epoch)?action.log.epoch:(state.epoch+1))
             })  //placeholder
         case 'MODEL_FITTED':
             return ({...state,

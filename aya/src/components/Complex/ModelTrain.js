@@ -1,7 +1,7 @@
 import React from "react";
-import DropFile from "../Basic/Dropfile/DropFile";
 import FileDisplay from "../Basic/FilesDisplay/FileDisplay";
 import SubmitButton from "../Basic/Buttons/SubmitButton/SubmitButton";
+import LineChart from "../Basic/LineCharts/VicLineChart"
 function ModelTrain(props){
     return <div id="training">
       <input
@@ -12,6 +12,7 @@ function ModelTrain(props){
         onChange={props.onChange}
         multiple
       />
+      <LineChart data={props.linePlot} X={'epoch'} valKeys={['loss','val_loss']} color={['red','orange']}/>
       <FileDisplay files={props.files}/>
       <SubmitButton 
         id="train_button"

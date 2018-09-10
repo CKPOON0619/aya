@@ -6,6 +6,14 @@ export const MenuClick=(pick)=>{
         pick:pick
     }
 }
+
+export const TrainingLog=(log)=>{
+    return {
+        type:'TRAINING_LOG',
+        log:log
+    }
+}
+
 export const FilesSelect=(evt,key,allowedTypes,limit)=>{
     var Files=evt.target.files
     var filesSaved=[];

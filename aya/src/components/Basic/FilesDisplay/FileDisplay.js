@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 function FileDisplay(props){
     var display=[];        
     // files is a FileList of File objects. List some properties.

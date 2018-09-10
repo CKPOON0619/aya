@@ -37,11 +37,19 @@ function handleTrain() {
         var xs=tf.tensor2d(inputData)
         var ys=tf.tensor2d(inputLabel)
         console.log('training....')
+        var base=state.epoch
+        console.log('BASE??????',state.epoch)
+        base=base?base:0
         return model.fit(xs, ys, {
-          epochs: 5,
+          epochs: 50,
+          validationSplit:0.8,
           callbacks: {
             onEpochEnd: async (epoch, log) => {
               console.log(`Epoch ${epoch}: loss = ${log.loss}`);
+              log.epoch=epoch+base;
+              console.log(base)
+              console.log(log)
+              this.store.dispatch(actions.TrainingLog(log))
             }
           }
         })

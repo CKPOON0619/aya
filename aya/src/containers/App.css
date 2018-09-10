@@ -27,7 +27,8 @@
 }
 
 #stage{
-  position: fixed;
+  display:inline;
+  position: absolute;
   top: 50%;
   left: 50%;
   /* bring your own prefixes */

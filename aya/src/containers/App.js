@@ -39,6 +39,7 @@ class App extends Component {
         return <ModelTrain
           files={this.store.getState().inputFiles}
           onDrop={(evt)=>this.handleFileDrops(evt,"inputFiles",["text/plain"],4)}
+          linePlot={this.store.getState().trainingLog}
           onChange={(evt)=>this.handleFileSelect(evt,"inputFiles",["text/plain"],4)}
           clicked={this.handleTrain}
         />; 
@@ -46,7 +47,6 @@ class App extends Component {
       case "modelPredict": { 
         return <ModelPredict 
           files={this.store.getState().predFiles}
-          onChange={this.handlePredictionSelect}
           onDrop={(evt)=>this.handleFileDrops(evt,"predFiles",["text/plain"],1)}
           onChange={(evt)=>this.handleFileSelect(evt,"predFiles",["text/plain"],1)}
           clickedSaveModel={this.handleModelDownload}
