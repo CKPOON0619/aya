@@ -3,55 +3,33 @@ import './Dropfile.css';
 
 class DropFile extends Component {
     constructor(props) {
-        super(props);
-        this.handleFileSelect = this.handleFileSelect.bind(this);
-        this.handleDragOver=this.handleDragOver.bind(this);
-        this.displayList=[];        
-        // files is a FileList of File objects. List some properties.
-        
-        if(props.files) {
-          for (let i = 0, f; (f = props.files[i])&&i<4; i++) {
-            console.log(f.type)
-            var allowed=props.allowedTypes.map((t)=>f.type===t).reduce((a,b)=>a+b)>0
-            if(allowed){ 
-              this.displayList.push(
-                <li key={'f'+i.toString()+'_'+f.name}>
-                    <strong> 
-                        {escape(f.name)}
-                    </strong> 
-                    ( {f.type || 'n/a'} ) - {f.size} bytes last modified: {f.lastModifiedDate.toLocaleDateString()}
-                </li>
-              )
-            };
-          }; 
-        }
-      }
-    handleFileSelect(evt) {
-        //evt.stopPropagation();
-        //evt.preventDefault();
-        this.props.onDrop(evt);
-        var files = evt.dataTransfer.files; // FileList object.
-        console.log(evt)
-        // files is a FileList of File objects. List some properties.
-        for (let i = 0, f; (f = files[i])&&this.displayList.length<4; i++) {
+      super(props);
+      this.displayList=[];
+      // files is a FileList of File objects. List some properties.
+      if(props.files) {
+        for (let i = 0, f; (f = props.files[i])&&i<4; i++) {
           console.log(f.type)
-          var allowed=this.props.allowedTypes.map((t)=>f.type===t).reduce((a,b)=>a+b)>0
-          if(allowed){ 
-            this.displayList.push(
-              <li key={'f'+i.toString()+'_'+f.name}>
-                  <strong> 
-                      {escape(f.name)}
-                  </strong> 
-                  ( {f.type || 'n/a'} ) - {f.size} bytes last modified: {f.lastModifiedDate.toLocaleDateString()}
-              </li>
-            )
-          };
-        };  
-
+          this.displayList.push(
+            <li key={'f'+i.toString()+'_'+f.name}>
+                <strong> 
+                    {escape(f.name)}
+                </strong> 
+                ( {f.type || 'n/a'} ) - {f.size} bytes last modified: {f.lastModifiedDate.toLocaleDateString()}
+            </li>
+          )
+        }; 
+      };
+    }
+    handleFileSelect(evt) {
+      evt.stopPropagation();
+      evt.preventDefault();
+      this.props.onDrop(evt,this.props.key,this.props.allowedTypes,this.props.limit);
     }
   
     handleDragOver(evt) {
-        this.props.onDragOver(evt);
+      evt.stopPropagation();
+      evt.preventDefault();
+      this.props.onDragOver(evt);
     }
     render() {    
       // Setup the dnd listeners.

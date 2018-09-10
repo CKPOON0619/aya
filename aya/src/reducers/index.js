@@ -23,7 +23,7 @@ export default (state=initial_state,action)=>{
     switch(action.type){
         case 'MENU_CLICK':
             console.log('menuclicked')
-            return Object.assign({},state,{
+            return ({...state,
                 stage:action.pick
             }) 
         case 'FILES_SELECT':
@@ -31,33 +31,42 @@ export default (state=initial_state,action)=>{
             console.log('files selected')
             updates[action.key]=action.files;
             return Object.assign({},state,updates)
+        case 'FILE_DROPS':
+            let updates=new Object();
+            console.log('files dropped')
+            updates[action.key]=action.files;
+            return Object.assign({},state,updates)
         case 'MODEL_UPLOAD_FAILED':
-            return Object.assign({},state,{modelStatus:'MODEL_UPLOAD_FAILED'}) //placeholder
+            return ({...state,
+                modelStatus:'MODEL_UPLOAD_FAILED'
+            }) 
         case 'MODEL_UPLOAD_S1':
-            return Object.assign({},state,{modelStatus:'MODEL_UPLOAD_S1'}) //placeholder
+            return ({...state,
+                modelStatus:'MODEL_UPLOAD_S1'
+            }) 
         case 'MODEL_UPLOAD_S2':
-            return Object.assign({},state,{
+            return ({...state,
                 modelTrained:action.model,
                 modelStatus:'MODEL_UPLOAD_S2'
             })
         case 'READING_FILES':
-            return Object.assign({},state,{
+            return ({...state,
                 predStatus:'READING_FILES'
             }) //placeholder        
         case 'FILES_READ':
-            return Object.assign({},state,{
+            return ({...state,
                 predStatus:'FILES_READ'
             }) 
         case 'MODEL_FITTING':
-            return Object.assign({},state,{
+            return ({...state,
                 trainingStatus:'MODEL_FITTING'
             })  //placeholder
         case 'MODEL_FITTED':
-            return Object.assign({},state,{
+            return ({...state,
                 trainingStatus:'MODEL_FITTED'
             })  //placeholder
         case 'UPLOAD_PRED':
-            return Object.assign({},state,{
+            return ({...state,
                 predictions:action.predictions
             }) 
         default:

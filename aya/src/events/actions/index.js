@@ -13,6 +13,22 @@ export const FilesSelect=(evt,key)=>{
         files:evt.target.files
     }
 }
+
+export const FileDrops=(evt,key,allowedTypes,limit)=>{
+    var Files=evt.dataTransfer.files
+    var filesSaved=[];
+    if(Files) {
+        for (let i = 0, f; (f = Files[i])&&i<limit; i++) {
+            if(allowedTypes.map((t)=>f.type===t).reduce((a,b)=>a+b)>0) filesSaved.push(f);
+        }
+    }
+    return {
+        type:'FILES_SELECT',
+        key:key,
+        files:filesSaved
+    }
+}
+
 export const ModelUploadFailed=(evt,key)=>{
     return {
         type:'MODEL_UPLOAD_FAILED'
