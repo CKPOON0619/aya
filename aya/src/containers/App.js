@@ -49,6 +49,7 @@ class App extends Component {
           files={this.store.getState().predFiles}
           onDrop={(evt)=>this.handleFileDrops(evt,"predFiles",["text/plain"],1)}
           onChange={(evt)=>this.handleFileSelect(evt,"predFiles",["text/plain"],1)}
+          clickedPredict={this.handlePredict}
           clickedSaveModel={this.handleModelDownload}
           clickedDownload={this.handleDownload}
         />; 
