@@ -9,7 +9,6 @@ function ModelUpload(props){
         id="modelUpload_dropZone"
         className="modelUpload"
         type={"file"}
-        accept={".json,.bin"}
         onChange={props.onChange}
         multiple
       />

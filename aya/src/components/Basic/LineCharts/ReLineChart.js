@@ -9,6 +9,7 @@ class ReLineChart extends Component {
     render(){ 
         return <LineChart width={400} height={400} data={this.props.data} animationDuration={1000}>
             {this.props.valKeys.map((valKey,key)=><Line 
+                key={key}
                 type="monotone" 
                 dataKey={valKey}
                 stroke={this.props.color[key]} 

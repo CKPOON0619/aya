@@ -20,9 +20,15 @@ export const FilesSelect=(evt,key,allowedTypes,limit)=>{
     var count=0;
     if(Files) {
         for (let i = 0, f; (f = Files[i])&&count<limit; i++) {
-            if(allowedTypes.map((t)=>f.type===t).reduce((a,b)=>a+b)>0){
+            console.log('ftype:',f.type)
+            if(allowedTypes){
+                if(allowedTypes.map((t)=>f.type===t).reduce((a,b)=>a+b)>0){
+                    filesSaved.push(f)
+                    count++
+                }
+            }else{
                 filesSaved.push(f)
-                count++
+                count++  
             }
         }
     }
@@ -39,13 +45,18 @@ export const FileDrops=(evt,key,allowedTypes,limit)=>{
     var count=0;
     if(Files) {
         for (let i = 0, f; (f = Files[i])&&count<limit; i++) {
-            if(allowedTypes.map((t)=>f.type===t).reduce((a,b)=>a+b)>0){
+            console.log('ftype:',f.type)
+            if(allowedTypes){
+                if(allowedTypes.map((t)=>f.type===t).reduce((a,b)=>a+b)>0){
+                    filesSaved.push(f)
+                    count++
+                }
+            }else{
                 filesSaved.push(f)
-                count++
-            };
+                count++  
+            }
         }
     }
-    console.log(filesSaved)
     return {
         type:'FILES_SELECT',
         key:key,

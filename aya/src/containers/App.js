@@ -30,8 +30,8 @@ class App extends Component {
         return <ModelUpload
           style={{width:500, height:150}}
           files={this.store.getState().modelFiles}
-          onDrop={(evt)=>this.handleFileDrops(evt,"modelFiles",["application/json","application/octet-stream"],2)}
-          onChange={(evt)=>this.handleFileSelect(evt,"modelFiles",["application/json","application/octet-stream"],2)}
+          onDrop={(evt)=>this.handleFileDrops(evt,"modelFiles",false,2)}
+          onChange={(evt)=>this.handleFileSelect(evt,"modelFiles",false,2)}
           clicked={this.handleModelUpload}
         />;
       } 
