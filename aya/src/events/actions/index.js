@@ -22,6 +22,15 @@ export const TextInputReceived=({text,key})=>{
     }
 }
 
+export const TextEmbedded=([embeddingsClass1,embeddingsClass2])=>{
+    return {
+        type:'TEXT_CLASS_EMBEDDINGS_RECEIVED',
+        showTextLabelPredict:true,
+        embeddingsClass1,
+        embeddingsClass2,
+    }
+}
+
 export const TextInputSubmitted=()=>{
     return {
         type:'TEXT_INPUT_SUBMITTED'

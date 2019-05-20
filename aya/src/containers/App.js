@@ -29,11 +29,12 @@ class App extends Component {
 
   //A switch that decides what to be rendered based on different stage in the state
   contentStager(stage){
+    let state=this.store.getState()
     switch(stage) { 
       case "modelUpload": { 
         return <ModelUpload
           style={{width:500, height:150}}
-          files={this.store.getState().modelFiles}
+          files={state.modelFiles}
           onDrop={(evt)=>this.handleFileDrops(evt,"modelFiles",false,2)}
           onChange={(evt)=>this.handleFileSelect(evt,"modelFiles",false,2)}
           clicked={this.handleModelUpload}
@@ -41,16 +42,16 @@ class App extends Component {
       } 
       case "modelTrain": { 
         return <ModelTrain
-          files={this.store.getState().inputFiles}
+          files={state.inputFiles}
           onDrop={(evt)=>this.handleFileDrops(evt,"inputFiles",["text/plain"],4)}
-          linePlot={this.store.getState().trainingLog}
+          linePlot={state.trainingLog}
           onChange={(evt)=>this.handleFileSelect(evt,"inputFiles",["text/plain"],4)}
           clicked={this.handleTrain}
         />; 
       } 
       case "modelPredict": { 
         return <ModelPredict 
-          files={this.store.getState().predFiles}
+          files={state.predFiles}
           onDrop={(evt)=>this.handleFileDrops(evt,"predFiles",["text/plain"],1)}
           onChange={(evt)=>this.handleFileSelect(evt,"predFiles",["text/plain"],1)}
           clickedPredict={this.handlePredict}
@@ -59,9 +60,12 @@ class App extends Component {
         />; 
      } 
      case "textClassifier": { 
+       console.log('lalalala',this.store.getState())
       return <TextClassifier 
         onChange={(name)=>(evt)=>this.handleTextInput({key:name,text:evt.target.value})}
         onClickSubmit={()=>this.handleTextSubmit()}
+        onClickLabel={console.log}
+        showPredict={state.showTextLabelPredict}
       />
       
    }

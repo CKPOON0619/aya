@@ -82,6 +82,13 @@ export default (state=initial_state,action)=>{
                 ...state,
                 modelState:"TextReceived"
             })
+        case 'TEXT_CLASS_EMBEDDINGS_RECEIVED':
+            return {
+                ...state,
+                embeddingsClass1:action.embeddingsClass1,
+                embeddingsClass2:action.embeddingsClass2,
+                showTextLabelPredict:action.showTextLabelPredict
+            }
         default:
             return state
     }
