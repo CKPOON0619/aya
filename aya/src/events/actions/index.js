@@ -7,6 +7,27 @@ export const MenuClick=(pick)=>{
     }
 }
 
+export const PushInputTextTo=(key,payload)=>{
+    return {
+        type:"PUSH_INPUT_TEXT_TO_GROUP",
+        key,
+        payload
+    }
+}
+
+export const StoreEncoder=(encoderModel)=>{
+    return {
+        type:"ECODER_MODEL_CACHE",
+        encoderModel:encoderModel
+    }
+}
+
+export const TextInputLabelSubmitted=()=>{
+    return {
+        type:'TEXT_INPUT_LABEL_UPDATE'
+    }
+}
+
 export const TrainingLog=(log)=>{
     return {
         type:'TRAINING_LOG',
@@ -33,7 +54,8 @@ export const TextEmbedded=([embeddingsClass1,embeddingsClass2])=>{
 
 export const TextInputSubmitted=()=>{
     return {
-        type:'TEXT_INPUT_SUBMITTED'
+        type:'TEXT_INPUT_SUBMITTED',
+        showTextLabelPredict:false,
     }
 }
 

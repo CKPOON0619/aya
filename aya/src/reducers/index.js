@@ -89,6 +89,17 @@ export default (state=initial_state,action)=>{
                 embeddingsClass2:action.embeddingsClass2,
                 showTextLabelPredict:action.showTextLabelPredict
             }
+        case 'ECODER_MODEL_CACHE':
+            return {
+                ...state,
+                encoderModel:action.encoderModel
+            }
+        case 'PUSH_INPUT_TEXT_TO_GROUP':
+            console.log({state,action})
+            return {
+                ...state,
+                [action.key]:state[action.key]+'\n'+action.payload
+            }
         default:
             return state
     }

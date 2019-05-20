@@ -1,6 +1,5 @@
 import * as actions from "./actions/index";
 import * as use from '@tensorflow-models/universal-sentence-encoder';
-import * as tf from '@tensorflow/tfjs';
 
 // async function handleTextSubmit() {
 //   var state= this.store.getState();
@@ -21,6 +20,7 @@ function handleTextSubmit() {
       //this.store.dispatch(actions.textEmbedding())
 
         use.load().then(model => {
+            this.store.dispatch(actions.StoreEncoder(model))
             // Embed an array of sentences.
             return Promise.all([
                 model.embed(text1).then(embeddings => {

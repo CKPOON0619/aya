@@ -25,6 +25,7 @@ class App extends Component {
     this.handleFileDrops = require("../events/handleFileDrops").default.bind(this);
     this.handleTextInput = require("../events/handleTextInput").default.bind(this);
     this.handleTextSubmit = require("../events/handleTextSubmit").default.bind(this);
+    this.handleLabelPredictionSubmit=require("../events/handleLabelPredictionSubmit").default.bind(this);
   }
 
   //A switch that decides what to be rendered based on different stage in the state
@@ -60,11 +61,11 @@ class App extends Component {
         />; 
      } 
      case "textClassifier": { 
-       console.log('lalalala',this.store.getState())
       return <TextClassifier 
+        state={this.store.getState()}
         onChange={(name)=>(evt)=>this.handleTextInput({key:name,text:evt.target.value})}
         onClickSubmit={()=>this.handleTextSubmit()}
-        onClickLabel={console.log}
+        onClickPredictLabel={()=>this.handleLabelPredictionSubmit()}
         showPredict={state.showTextLabelPredict}
       />
       
