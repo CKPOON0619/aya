@@ -1,7 +1,7 @@
 //Handling change of state with payload
 
 const initial_state={
-    stage:'modelUpload',
+    stage:'textClassifier',
     dataDim:null,
     inputFiles: null,
     inputData:[],
@@ -72,6 +72,16 @@ export default (state=initial_state,action)=>{
             return ({...state,
                 predictions:action.predictions
             }) 
+        case 'TEXT_INPUT_RECEIVED':
+            return ({
+                ...state,
+                [action.key]:action.text
+            })
+        case 'TEXT_INPUT_SUBMITTED':
+            return ({
+                ...state,
+                modelState:"TextReceived"
+            })
         default:
             return state
     }

@@ -14,6 +14,20 @@ export const TrainingLog=(log)=>{
     }
 }
 
+export const TextInputReceived=({text,key})=>{
+    return {
+        type:'TEXT_INPUT_RECEIVED',
+        key:key,
+        text:text
+    }
+}
+
+export const TextInputSubmitted=()=>{
+    return {
+        type:'TEXT_INPUT_SUBMITTED'
+    }
+}
+
 export const FilesSelect=(evt,key,allowedTypes,limit)=>{
     var Files=evt.target.files
     var filesSaved=[];

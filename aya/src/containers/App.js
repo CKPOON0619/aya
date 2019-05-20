@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import {ModelUpload} from "../components/Complex/ModelUpload";
 import {ModelTrain} from "../components/Complex/ModelTrain";
 import {ModelPredict} from "../components/Complex/ModelPredict";
+import {TextClassifier} from "../components/Complex/TextClassifier";
+
 import "./App.css";
 
 import LongMenu from "../components/Complex/LongMenu"
@@ -21,6 +23,8 @@ class App extends Component {
     this.handlePredict = require("../events/handlePredict").default.bind(this);
     this.handleDownload = require("../events/handleDownload").default.bind(this);
     this.handleFileDrops = require("../events/handleFileDrops").default.bind(this);
+    this.handleTextInput = require("../events/handleTextInput").default.bind(this);
+    this.handleTextSubmit = require("../events/handleTextSubmit").default.bind(this);
   }
 
   //A switch that decides what to be rendered based on different stage in the state
@@ -54,6 +58,13 @@ class App extends Component {
           clickedDownload={this.handleDownload}
         />; 
      } 
+     case "textClassifier": { 
+      return <TextClassifier 
+        onChange={(name)=>(evt)=>this.handleTextInput({key:name,text:evt.target.value})}
+        onClickSubmit={()=>this.handleTextSubmit()}
+      />
+      
+   }
       default: { 
          //statements; 
          break; 
